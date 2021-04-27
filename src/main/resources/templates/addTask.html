@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nowe zadanie</title>
+</head>
+<body>
+    <h3>Nowe zadanie</h3>
+    <form th:action="@{/addTask}" method="POST" th:object="${task}">
+        <div>
+            <label for="taskName">Nazwa zadania</label>
+            <input type="text" id="taskName" th:field="*{name}"/>
+        </div>
+        <div>
+            <label for="taskDescription">Opis</label>
+            <textarea id="taskDescription" th:field="*{description}" maxlength="250"></textarea>
+        </div>
+        <div>
+            <label for="assignedUser">Przypisz użytkownika</label>
+            <select id="assignedUser" th:field="*{user}">
+                <option th:each="user: ${users}" th:value="${user.id}" th:text="|${user.firstName} ${user.lastName}|"></option>
+            </select>
+        </div>
+        <div>
+            <label for="taskStatus">Status zadania</label>
+            <select id="taskStatus" th:field="*{status}">
+                <option th:each="status: ${T(pl.osowicz.task_manager.Status).values()}" th:value="${status}" th:text="${status.getPlName()}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="startDate">Rozpoczęcie zadania</label>
+            <input type="datetime-local" id="startDate" th:field="*{startDate}">
+        </div>
+            <label for="endDate">Zakończenie zadania</label>
+            <input type="datetime-local" id="endDate" th:field="*{endDate}">
+        </div>
+        <input type="submit" value="Dodaj">
+    </form>
+</body>
+</html>

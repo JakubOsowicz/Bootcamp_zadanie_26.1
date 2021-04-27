@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista zadań</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>id</th>
+        <th>Nazwa</th>
+        <th>Opis</th>
+<!--        <th>Osoba odpowiedzialna</th>-->
+        <th>Czas rozpoczęcia</th>
+        <th>Czas zakończenia</th>
+        <th>Status</th>
+    </tr>
+    <tr th:each="task: ${tasks}">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.description}"></td>
+<!--        <td th:text="${task.user.firstName}"></td>-->
+        <td th:text="${task.startDate}"></td>
+        <td th:text="${task.endDate}"></td>
+        <td th:text="${task.status}"></td>
+    </tr>
+</table>
+</body>
+</html>

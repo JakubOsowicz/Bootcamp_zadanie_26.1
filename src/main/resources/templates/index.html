@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ostatni władca zadań</title>
+</head>
+<body>
+    <h2>System zgłoszeniowy on-line</h2>
+    <a th:href="@{/taskList}"><button>Pełna lista zadań</button></a>
+    <button>Zadania do wykonania</button>
+    <a th:href="@{/taskList(status=COMPLETED)}"><button>Zrealizowane do tej pory</button></a>
+    <a th:href="@{addTask}"><button>Dodaj nowe zadanie</button></a>
+</body>
+</html>
