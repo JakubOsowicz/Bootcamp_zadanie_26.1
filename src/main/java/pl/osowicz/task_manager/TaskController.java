@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.tags.Param;
 
+import java.lang.reflect.Parameter;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +58,8 @@ public class TaskController {
 
     private void setTaskStatusCompleted(Task task) {
         task.setStatus(Status.COMPLETED);
+        task.setEndDate(LocalDateTime.now());
+        taskRepository.save(task);
     }
 
     @GetMapping("/taskList")
@@ -65,7 +70,7 @@ public class TaskController {
         } else if (Status.COMPLETED.equals(status)) {
             tasks = taskRepository.findAllByAndStatusEquals(status);
         } else {
-            tasks = taskRepository.findAllByStatusIsNot(Status.COMPLETED);
+            tasks = taskRepository.findAllByStatusIsNotOrderByDeadLine(Status.COMPLETED);
         }
         model.addAttribute("tasks", tasks);
         return "taskList";
@@ -86,6 +91,7 @@ public class TaskController {
 
     @PostMapping("/editTask")
     public String saveEditedTask(Task task) {
+        setTaskStatus(task);
         taskRepository.save(task);
         return "redirect:/taskList";
     }
@@ -93,6 +99,13 @@ public class TaskController {
     @RequestMapping("/deleteTask")
     public String deleteTaskFromDatabase(@RequestParam(name = "id") Long id) {
         taskRepository.deleteById(id);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/done")
+    public String endTask(@RequestParam(name = "id") Long id) {
+        Optional<Task> task = taskRepository.findById(id);
+        task.ifPresent(this::setTaskStatusCompleted);
         return "redirect:/";
     }
 }

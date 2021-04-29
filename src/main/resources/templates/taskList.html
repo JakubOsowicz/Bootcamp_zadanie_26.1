@@ -17,7 +17,8 @@
         <th>Status</th>
         <th></th>
     </tr>
-    <tr th:each="task: ${tasks}">
+    <tr th:each="task: ${tasks}" th:style="${task.deadLine.isBefore(#temporals.createNow()) ? 'color: rgb(255,78,78)' : 'color: rgb(0,0,0)'}">
+        //and task.status!=pl.osowicz.task_manager.Status.COMPLETED.name())
         <td th:text="${task.id}"></td>
         <td th:text="${task.name}"></td>
         <td th:text="${task.description}"></td>
@@ -30,15 +31,12 @@
         <td th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"></td>
         <td th:text="${task.status.getPlName()}"></td>
         <td>
-            <a th:href="@{editTask(done= )}"></a> //przycisk do zmiany statusu zadania na gotowe
-            // jeśli lista gotowych, select zmiany statusu na inne niż gotowe
-        </td>
-        <td>
+            <a th:href="@{/done(id=${task.id})}">
+                <button>Zrobione!</button>
+            </a>
             <a th:href="@{/editTask(id=${task.id})}">
                 <button>Edytuj</button>
             </a>
-        </td>
-        <td>
             <a th:href="@{/deleteTask(id=${task.id})}">
                 <button>Usuń</button>
             </a>

@@ -7,5 +7,5 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findAllByAndStatusEquals(Status status);
 
-    List<Task> findAllByStatusIsNot(Status status);
+    List<Task> findAllByStatusIsNotOrderByDeadLine(Status status);
 }
