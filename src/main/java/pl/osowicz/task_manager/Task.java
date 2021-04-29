@@ -12,21 +12,34 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String description;
+
     @ManyToOne
     private User user;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startDate;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime endDate;
+
+    @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime deadLine;
 
     public Task() {
     }
 
-    public Task(Long id, String name, String description, User user, Status status, LocalDateTime startDate, LocalDateTime endDate) {
+    public Task(Long id, String name, String description, User user, Status status, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime deadLine) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -34,6 +47,7 @@ public class Task {
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.deadLine = deadLine;
     }
 
     @Override
@@ -45,12 +59,12 @@ public class Task {
             return false;
         }
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && Objects.equals(user, task.user) && status == task.status && Objects.equals(startDate, task.startDate) && Objects.equals(endDate, task.endDate);
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && Objects.equals(user, task.user) && status == task.status && Objects.equals(startDate, task.startDate) && Objects.equals(endDate, task.endDate) && Objects.equals(deadLine, task.deadLine);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, user, status, startDate, endDate);
+        return Objects.hash(id, name, description, user, status, startDate, endDate, deadLine);
     }
 
     public Long getId() {
@@ -107,5 +121,13 @@ public class Task {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public LocalDateTime getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(LocalDateTime deadLine) {
+        this.deadLine = deadLine;
     }
 }

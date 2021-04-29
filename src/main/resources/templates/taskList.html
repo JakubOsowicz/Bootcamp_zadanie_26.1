@@ -10,19 +10,39 @@
         <th>id</th>
         <th>Nazwa</th>
         <th>Opis</th>
-<!--        <th>Osoba odpowiedzialna</th>-->
+        <th>Osoba odpowiedzialna</th>
         <th>Czas rozpoczęcia</th>
+        <th>DeadLine</th>
         <th>Czas zakończenia</th>
         <th>Status</th>
+        <th></th>
     </tr>
     <tr th:each="task: ${tasks}">
         <td th:text="${task.id}"></td>
         <td th:text="${task.name}"></td>
         <td th:text="${task.description}"></td>
-<!--        <td th:text="${task.user.firstName}"></td>-->
-        <td th:text="${task.startDate}"></td>
-        <td th:text="${task.endDate}"></td>
-        <td th:text="${task.status}"></td>
+        <td>
+            <span th:if="${task.user != null}" th:text="|${task.user.firstName} ${task.user.lastName}|"></span>
+            <span th:unless="${task.user != null}"> </span>
+        </td>
+        <td th:text="${#temporals.format(task.startDate, 'dd.MM.yyyy HH:mm')}"></td>
+        <td th:text="${#temporals.format(task.deadLine, 'dd.MM.yyyy HH:mm')}"></td>
+        <td th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"></td>
+        <td th:text="${task.status.getPlName()}"></td>
+        <td>
+            <a th:href="@{editTask(done= )}"></a> //przycisk do zmiany statusu zadania na gotowe
+            // jeśli lista gotowych, select zmiany statusu na inne niż gotowe
+        </td>
+        <td>
+            <a th:href="@{/editTask(id=${task.id})}">
+                <button>Edytuj</button>
+            </a>
+        </td>
+        <td>
+            <a th:href="@{/deleteTask(id=${task.id})}">
+                <button>Usuń</button>
+            </a>
+        </td>
     </tr>
 </table>
 </body>

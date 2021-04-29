@@ -9,19 +9,20 @@
     <form th:action="@{/addTask}" method="POST" th:object="${task}">
         <div>
             <label for="taskName">Nazwa zadania</label>
-            <input type="text" id="taskName" th:field="*{name}"/>
+            <input type="text" id="taskName" th:field="*{name}" required/>
         </div>
         <div>
             <label for="taskDescription">Opis</label>
-            <textarea id="taskDescription" th:field="*{description}" maxlength="250"></textarea>
+            <textarea id="taskDescription" th:field="*{description}" maxlength="250" required></textarea>
         </div>
         <div>
             <label for="assignedUser">Przypisz użytkownika</label>
             <select id="assignedUser" th:field="*{user}">
+                <option value="" th:hidden="true">Wybierz użytkownika</option>
                 <option th:each="user: ${users}" th:value="${user.id}" th:text="|${user.firstName} ${user.lastName}|"></option>
             </select>
         </div>
-        <div>
+        <div hidden="hidden">
             <label for="taskStatus">Status zadania</label>
             <select id="taskStatus" th:field="*{status}">
                 <option th:each="status: ${T(pl.osowicz.task_manager.Status).values()}" th:value="${status}" th:text="${status.getPlName()}"></option>
@@ -31,8 +32,8 @@
             <label for="startDate">Rozpoczęcie zadania</label>
             <input type="datetime-local" id="startDate" th:field="*{startDate}">
         </div>
-            <label for="endDate">Zakończenie zadania</label>
-            <input type="datetime-local" id="endDate" th:field="*{endDate}">
+            <label for="deadLine">DeadLine</label>
+            <input type="datetime-local" id="deadLine" th:field="*{deadLine}" required>
         </div>
         <input type="submit" value="Dodaj">
     </form>
