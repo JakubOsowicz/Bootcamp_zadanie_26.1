@@ -9,6 +9,8 @@ import java.util.Objects;
 @Entity
 public class Task {
 
+    private final String datePattern = "yyyy-MM-dd'T'HH:mm";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,14 +28,14 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = datePattern)
     private LocalDateTime startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = datePattern)
     private LocalDateTime endDate;
 
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = datePattern)
     private LocalDateTime deadLine;
 
     public Task() {
@@ -48,23 +50,6 @@ public class Task {
         this.startDate = startDate;
         this.endDate = endDate;
         this.deadLine = deadLine;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && Objects.equals(user, task.user) && status == task.status && Objects.equals(startDate, task.startDate) && Objects.equals(endDate, task.endDate) && Objects.equals(deadLine, task.deadLine);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, user, status, startDate, endDate, deadLine);
     }
 
     public Long getId() {
@@ -129,5 +114,22 @@ public class Task {
 
     public void setDeadLine(LocalDateTime deadLine) {
         this.deadLine = deadLine;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Task task = (Task) o;
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && Objects.equals(user, task.user) && status == task.status && Objects.equals(startDate, task.startDate) && Objects.equals(endDate, task.endDate) && Objects.equals(deadLine, task.deadLine);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, user, status, startDate, endDate, deadLine);
     }
 }

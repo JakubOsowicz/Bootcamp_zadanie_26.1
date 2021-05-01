@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.tags.Param;
 
-import java.lang.reflect.Parameter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -49,10 +47,12 @@ public class TaskController {
         if (task.getUser() == null) {
             task.setStatus(Status.NOT_ASSIGNED);
             task.setStartDate(null);
-        } else if (task.getUser() != null && task.getStartDate() == null) {
-            task.setStatus(Status.ASSIGNED);
-        } else if (task.getUser() != null && task.getStartDate() != null) {
-            task.setStatus(Status.STARTED);
+        } else {
+            if (task.getStartDate() == null) {
+                task.setStatus(Status.ASSIGNED);
+            } else {
+                task.setStatus(Status.STARTED);
+            }
         }
     }
 
