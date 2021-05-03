@@ -73,16 +73,18 @@ public class TaskController {
             tasks = taskRepository.findAllByStatusIsNotOrderByDeadLine(Status.COMPLETED);
         }
         model.addAttribute("tasks", tasks);
+        model.addAttribute("status", status);
         return "taskList";
     }
 
     @GetMapping("/editTask")
-    public String editTask(@RequestParam(name = "id") Long id, Model model) {
+    public String editTask(@RequestParam(name = "id") Long id, Model model, Status status) {
         Optional<Task> task = taskRepository.findById(id);
         if (task.isPresent()) {
             List<User> users = userRepository.findAll();
             model.addAttribute("task", task.get());
             model.addAttribute("users", users);
+            model.addAttribute("listStatus", status);
         } else {
             return "redirect:/";
         }
@@ -90,22 +92,30 @@ public class TaskController {
     }
 
     @PostMapping("/editTask")
-    public String saveEditedTask(Task task) {
+    public String saveEditedTask(Task task, @RequestParam(name = "status", required = false) Status listStatus) {
         setTaskStatus(task);
         taskRepository.save(task);
-        return "redirect:/taskList";
+        return redirectToPreviousTaskList(listStatus);
     }
 
     @RequestMapping("/deleteTask")
-    public String deleteTaskFromDatabase(@RequestParam(name = "id") Long id) {
+    public String deleteTaskFromDatabase(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus) {
         taskRepository.deleteById(id);
-        return "redirect:/";
+        return redirectToPreviousTaskList(listStatus);
     }
 
     @RequestMapping("/done")
-    public String endTask(@RequestParam(name = "id") Long id) {
+    public String endTask(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus) {
         Optional<Task> task = taskRepository.findById(id);
         task.ifPresent(this::setTaskStatusCompleted);
-        return "redirect:/";
+        return redirectToPreviousTaskList(listStatus);
+    }
+
+    private String redirectToPreviousTaskList(@RequestParam(name = "status", required = false) Status listStatus) {
+        if (listStatus == null) {
+            return "redirect:/taskList?status=";
+        } else {
+            return "redirect:/taskList?status=" + listStatus;
+        }
     }
 }

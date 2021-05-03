@@ -11,10 +11,14 @@
 <body>
 <section layout:fragment="content">
 <h3>Nowe zadanie</h3>
-<form th:action="@{/editTask}" method="POST" style="width: 90%; margin-left: 5%" th:object="${task}">
+<form th:action="@{/editTask(status=${listStatus})}" method="POST" style="width: 90%; margin-left: 5%" th:object="${task}">
     <div hidden="hidden">
         <label for="taskId" class="form-label">id</label>
         <input type="number" id="taskId" class="form-control" th:value="*{id}" th:field="*{id}">
+    </div>
+    <div hidden="hidden">
+        <label for="listStatus">Status wyświetlanej listy</label>
+        <input type="text" id="listStatus" th:object="${listStatus}" th:value="${listStatus}">
     </div>
     <div>
         <label for="taskName" class="form-label">Nazwa zadania</label>
@@ -42,6 +46,10 @@
     <div>
         <label for="startDate" class="form-label">Rozpoczęcie zadania</label>
         <input type="datetime-local" id="startDate" class="form-control" th:field="*{startDate}">
+    </div>
+    <div hidden="hidden">
+        <label for="endDate" class="form-label">Zakończenie zadania</label>
+        <input type="datetime-local" id="endDate" class="form-control" th:field="*{endDate}">
     </div>
     <div>
         <label for="deadLine" class="form-label">DeadLine</label>
