@@ -33,7 +33,7 @@ public class TaskController {
         Task task = new Task();
         model.addAttribute("task", task);
         model.addAttribute("users", users);
-        return "addTask";
+        return "task/addTask";
     }
 
     @PostMapping("/addTask")
@@ -74,7 +74,7 @@ public class TaskController {
         }
         model.addAttribute("tasks", tasks);
         model.addAttribute("status", status);
-        return "taskList";
+        return "task/taskList";
     }
 
     @GetMapping("/editTask")
@@ -88,7 +88,7 @@ public class TaskController {
         } else {
             return "redirect:/";
         }
-        return "editTask";
+        return "task/editTask";
     }
 
     @PostMapping("/editTask")

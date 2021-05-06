@@ -1,0 +1,38 @@
+body {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.content,
+.addEdit{
+    flex: 1 0 auto;
+}
+
+.content {
+    text-align: center;
+}
+
+.footer {
+    position: relative;
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+.navbar {
+
+}
+
+#svg_check:hover {
+    fill: green
+}
+
+#svg_edit:hover {
+    fill: blue
+}
+
+#svg_delete:hover {
+    fill: red
+}
