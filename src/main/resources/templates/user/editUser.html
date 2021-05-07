@@ -11,8 +11,12 @@
 </head>
 <body>
 <section layout:fragment="content" class="addEdit">
-    <h3>Nowy użytkownik</h3>
+    <h3>Edytuj użytkownika</h3>
     <form th:action="@{/addUser}" method="POST" th:object="${user}">
+        <div hidden="hidden">
+            <label for="userId" class="form-label">Id</label>
+            <input type="number" id="userId" class="form-control" th:field="*{id}"/>
+        </div>
         <div class="mb-3">
             <label for="userEmail" class="form-label">Adres mailowy</label>
             <input type="email" id="userEmail" class="form-control" th:field="*{email}" required/>
@@ -31,7 +35,7 @@
                 <option th:each="role: ${T(pl.osowicz.task_manager.UserRole).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Dodaj</button>
+        <button type="submit" class="btn btn-primary">Zapisz</button>
     </form>
 </section>
 </body>

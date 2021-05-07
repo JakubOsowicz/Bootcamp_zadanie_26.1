@@ -11,7 +11,7 @@
 </head>
 <body>
 <section layout:fragment="content" class="addEdit">
-<h3>Nowe zadanie</h3>
+<h3>Edytuj zadanie</h3>
 <form th:action="@{/editTask(status=${listStatus})}" method="POST" th:object="${task}">
     <div hidden="hidden">
         <label for="taskId" class="form-label">id</label>

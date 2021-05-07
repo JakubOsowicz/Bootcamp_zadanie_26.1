@@ -1,7 +1,5 @@
 package pl.osowicz.task_manager;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -23,16 +21,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Task> taskList;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     public User() {
     }
 
-    public User(Long id, String email, String firstName, String lastName, UserRole role, List<Task> taskList) {
+    public User(Long id, String email, String firstName, String lastName, UserRole role, List<Task> taskList, boolean active) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.taskList = taskList;
+        this.active = active;
     }
 
     public Long getId() {
@@ -83,6 +85,14 @@ public class User {
         this.taskList = taskList;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -92,11 +102,11 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && role == user.role && Objects.equals(taskList, user.taskList);
+        return active == user.active && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && role == user.role && Objects.equals(taskList, user.taskList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, role, taskList);
+        return Objects.hash(id, email, firstName, lastName, role, taskList, active);
     }
 }

@@ -1,5 +1,5 @@
-INSERT INTO user(first_Name, last_Name, role)
-VALUES ('Rick', 'Sanchez', 'USER'), ('Takeshi', 'Kovacs', 'USER'), ('Spinacz', 'z Worda', 'GUEST'), ('Ja', 'Osobiście', 'ADMIN');
+INSERT INTO user(first_Name, last_Name, role, active)
+VALUES ('Rick', 'Sanchez', 'USER', 'true'), ('Takeshi', 'Kovacs', 'USER', 'true'), ('Spinacz', 'z Worda', 'GUEST', 'true'), ('Ja', 'Osobiście', 'ADMIN', 'true');
 
 INSERT INTO task(name, description, status, dead_line)
 VALUES ('Zrobić portal-Gun', 'Wytentegować ten dynks z tamtym wihajstrem i spadać', 'NOT_ASSIGNED', '2021-05-10 10:00'),
@@ -8,5 +8,5 @@ VALUES ('Zrobić portal-Gun', 'Wytentegować ten dynks z tamtym wihajstrem i spa
 INSERT INTO task(name, description, user_id, status, dead_line)
 VALUES ('Podpowiedź', 'Daj losową, nic nie wnoszącą podpowiedź dla lamusów', 3, 'ASSIGNED', '2021-10-25 15:27');
 
-INSERT INTO task (name, description, user_id, status, start_Date, end_Date, dead_line)
+INSERT INTO task(name, description, user_id, status, start_Date, end_Date, dead_line)
 VALUES ('Piwo', 'Wieczorynka w Pozań city', 4, 'STARTED', '2021-05-02 15:00', '2021-05-03 10:00', '2021-05-03 16:00')

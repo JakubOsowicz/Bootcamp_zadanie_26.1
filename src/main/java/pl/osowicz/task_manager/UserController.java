@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -40,20 +41,26 @@ public class UserController {
     }
 
     @GetMapping("/editUser")
-    public String editUser() {
-
-        return "editUser";
+    public String editUser(@RequestParam(name = "id") Long id, Model model) {
+        User user = userRepository.getOne(id);
+        model.addAttribute("user", user);
+        return "user/editUser";
     }
 
     @PostMapping("/editUser")
-    public String saveEditedUser() {
-
+    public String saveEditedUser(User user) {
+        userRepository.save(user);
         return "redirect:/";
     }
 
     @RequestMapping("/deleteUser")
-    public String deleteUserFromDatabase() {
-
+    public String deleteUserFromDatabase(@RequestParam(name = "id") Long id) {
+        User user = userRepository.getOne(id);
+        if (user.getTaskList().isEmpty()) {
+            userRepository.deleteById(id);
+        } else {
+            return "redirect:/deleteError";
+        }
         return "redirect:/";
     }
 }
