@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout.html}">
+      layout:decorate="~{/layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>Ostatni władca zadań</title>
@@ -10,15 +10,15 @@
     <link rel="stylesheet" th:href="@{/style/main.css}">
 </head>
 <body>
-<section layout:fragment="content" class="content">
+<section layout:fragment="content" class="indexContent">
     <h2>System zgłoszeniowy on-line</h2>
     <div>
-        <a th:href="@{/taskList}"><button class="btn btn-outline-dark"> Pełna lista zadań</button></a>
-        <a th:href="@{/taskList(status=STARTED)}"><button class="btn btn-outline-dark">Zadania do wykonania</button></a>
-        <a th:href="@{/taskList(status=COMPLETED)}"><button class="btn btn-outline-dark">Zrealizowane do tej pory</button></a>
-        <a th:href="@{addTask}"><button class="btn btn-outline-dark">Dodaj nowe zadanie</button></a>
-        <a th:href="@{addUser}"><button class="btn btn-outline-dark">Dodaj nowego użytkownika</button></a>
-        <a th:href="@{userList}"><button class="btn btn-outline-dark">Lista użytkowników</button></a>
+        <a th:href="@{/task/list}"><button class="btn btn-outline-dark"> Pełna lista zadań</button></a>
+        <a th:href="@{/task/list(status=STARTED)}"><button class="btn btn-outline-dark">Zadania do wykonania</button></a>
+        <a th:href="@{/task/list(status=COMPLETED)}"><button class="btn btn-outline-dark">Zrealizowane do tej pory</button></a>
+        <a th:href="@{task/add}"><button class="btn btn-outline-dark">Dodaj nowe zadanie</button></a>
+        <a th:href="@{user/add}"><button class="btn btn-outline-dark">Dodaj nowego użytkownika</button></a>
+        <a th:href="@{user/list}"><button class="btn btn-outline-dark">Lista użytkowników</button></a>
     </div>
 </section>
 </body>

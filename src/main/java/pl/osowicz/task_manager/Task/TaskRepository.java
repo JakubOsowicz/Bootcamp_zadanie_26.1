@@ -1,4 +1,4 @@
-package pl.osowicz.task_manager;
+package pl.osowicz.task_manager.Task;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package pl.osowicz.task_manager;
+package pl.osowicz.task_manager.Task;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.osowicz.task_manager.User.User;
+import pl.osowicz.task_manager.User.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,16 +29,16 @@ public class TaskController {
         return "index";
     }
 
-    @GetMapping("/addTask")
+    @GetMapping("/task/add")
     public String addTask(Model model) {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByActiveIsTrue();
         Task task = new Task();
         model.addAttribute("task", task);
         model.addAttribute("users", users);
-        return "task/addTask";
+        return "/task/add";
     }
 
-    @PostMapping("/addTask")
+    @PostMapping("/task/add")
     public String addTaskToDatabase(Task task) {
         setTaskStatus(task);
         taskRepository.save(task);
@@ -62,7 +64,7 @@ public class TaskController {
         taskRepository.save(task);
     }
 
-    @GetMapping("/taskList")
+    @GetMapping("/task/list")
     public String showTasks(@RequestParam(required = false) Status status, Model model) {
         List<Task> tasks;
         if (status == null) {
@@ -74,37 +76,37 @@ public class TaskController {
         }
         model.addAttribute("tasks", tasks);
         model.addAttribute("status", status);
-        return "task/taskList";
+        return "/task/list";
     }
 
-    @GetMapping("/editTask")
+    @GetMapping("/task/edit")
     public String editTask(@RequestParam(name = "id") Long id, Model model, Status status) {
         Optional<Task> task = taskRepository.findById(id);
         if (task.isPresent()) {
-            List<User> users = userRepository.findAll();
+            List<User> users = userRepository.findAllByActiveIsTrue();
             model.addAttribute("task", task.get());
             model.addAttribute("users", users);
             model.addAttribute("listStatus", status);
         } else {
             return "redirect:/";
         }
-        return "task/editTask";
+        return "task/edit";
     }
 
-    @PostMapping("/editTask")
+    @PostMapping("/task/edit")
     public String saveEditedTask(Task task, @RequestParam(name = "status", required = false) Status listStatus) {
         setTaskStatus(task);
         taskRepository.save(task);
         return redirectToPreviousTaskList(listStatus);
     }
 
-    @RequestMapping("/deleteTask")
+    @RequestMapping("/task/delete")
     public String deleteTaskFromDatabase(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus) {
         taskRepository.deleteById(id);
         return redirectToPreviousTaskList(listStatus);
     }
 
-    @RequestMapping("/done")
+    @RequestMapping("/task/done")
     public String endTask(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus) {
         Optional<Task> task = taskRepository.findById(id);
         task.ifPresent(this::setTaskStatusCompleted);
@@ -113,9 +115,9 @@ public class TaskController {
 
     private String redirectToPreviousTaskList(@RequestParam(name = "status", required = false) Status listStatus) {
         if (listStatus == null) {
-            return "redirect:/taskList?status=";
+            return "redirect:/task/list?status=";
         } else {
-            return "redirect:/taskList?status=" + listStatus;
+            return "redirect:/task/list?status=" + listStatus;
         }
     }
 }

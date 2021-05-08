@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Szczegóły</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/style/main.css}">
+</head>
+<body>
+<section layout:fragment="content" class="content">
+    <div th:object="${user}">
+        <h3 th:text="|*{firstName} *{lastName}|"></h3>
+        <table class="table table-striped">
+            <tr>
+                <th>id</th>
+                <th>e-mail</th>
+                <th>uprawnienia</th>
+                <th>aktywny</th>
+            </tr>
+            <tr>
+                <td th:text="*{id}"></td>
+                <td th:text="*{email}"></td>
+                <td th:text="*{role}"></td>
+                <td>
+                    <span th:if="*{active == true}" th:text="Tak"></span>
+                    <span th:if="*{active == false}" th:text="Nie"></span>
+                </td>
+            </tr>
+        </table>
+        <h4>Lista zadań</h4>
+        <table class="table table-striped">
+            <tr>
+                <th>id</th>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Czas rozpoczęcia</th>
+                <th>DeadLine</th>
+                <th>Czas zakończenia</th>
+                <th>Status</th>
+            </tr>
+            <tr th:each="task : ${user.getTaskList()}">
+                <td th:text="${task.id}"></td>
+                <td th:text="${task.name}"></td>
+                <td th:text="${task.description}"></td>
+                <td th:text="${#temporals.format(task.startDate, 'dd.MM.yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(task.deadLine, 'dd.MM.yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"></td>
+                <td th:text="${task.status.getPlName()}"></td>
+            </tr>
+        </table>
+    </div>
+</section>
+</body>
+</html>

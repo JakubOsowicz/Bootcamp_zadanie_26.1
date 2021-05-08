@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout.html}">
+      layout:decorate="~{/layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>Nowe zadanie</title>
@@ -11,12 +11,8 @@
 </head>
 <body>
 <section layout:fragment="content" class="addEdit">
-    <h3>Edytuj użytkownika</h3>
-    <form th:action="@{/addUser}" method="POST" th:object="${user}">
-        <div hidden="hidden">
-            <label for="userId" class="form-label">Id</label>
-            <input type="number" id="userId" class="form-control" th:field="*{id}"/>
-        </div>
+    <h3>Nowy użytkownik</h3>
+    <form th:action="@{/user/add}" method="POST" th:object="${user}">
         <div class="mb-3">
             <label for="userEmail" class="form-label">Adres mailowy</label>
             <input type="email" id="userEmail" class="form-control" th:field="*{email}" required/>
@@ -32,10 +28,10 @@
         <div class="mb-3">
             <label for="userRole" class="form-label">Uprawnienia</label>
             <select id="userRole" class="form-select" th:field="*{role}">
-                <option th:each="role: ${T(pl.osowicz.task_manager.UserRole).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
+                <option th:each="role: ${T(pl.osowicz.task_manager.User.UserRole).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Zapisz</button>
+        <button type="submit" class="btn btn-primary">Dodaj</button>
     </form>
 </section>
 </body>

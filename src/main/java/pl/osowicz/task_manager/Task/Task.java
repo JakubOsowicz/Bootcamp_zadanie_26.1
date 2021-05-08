@@ -1,6 +1,7 @@
-package pl.osowicz.task_manager;
+package pl.osowicz.task_manager.Task;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import pl.osowicz.task_manager.User.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

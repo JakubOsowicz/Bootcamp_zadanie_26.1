@@ -7,11 +7,12 @@ body {
 }
 
 .content,
+.indexContent,
 .addEdit{
     flex: 1 0 auto;
 }
 
-.content {
+.indexContent {
     text-align: center;
 }
 
@@ -35,4 +36,8 @@ body {
 
 #svg_delete:hover {
     fill: red
+}
+
+#svg_details:hover {
+    fill: orange;
 }

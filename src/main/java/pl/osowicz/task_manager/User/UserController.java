@@ -1,4 +1,4 @@
-package pl.osowicz.task_manager;
+package pl.osowicz.task_manager.User;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.osowicz.task_manager.Task.TaskRepository;
 
 import java.util.List;
 
@@ -20,47 +21,55 @@ public class UserController {
         this.taskRepository = taskRepository;
     }
 
-    @GetMapping("/userList")
+    @GetMapping("/user/list")
     public String showUsers(Model model) {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByActiveIsTrue();
         model.addAttribute("users", users);
-        return "user/userList";
+        return "user/list";
     }
 
-    @GetMapping("/addUser")
+    @GetMapping("/user/add")
     public String addUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "user/addUser";
+        return "user/add";
     }
 
-    @PostMapping("/addUser")
+    @PostMapping("/user/add")
     public String addUserToDatabase(User user) {
         userRepository.save(user);
         return "redirect:/";
     }
 
-    @GetMapping("/editUser")
+    @GetMapping("/user/edit")
     public String editUser(@RequestParam(name = "id") Long id, Model model) {
         User user = userRepository.getOne(id);
         model.addAttribute("user", user);
-        return "user/editUser";
+        return "user/edit";
     }
 
-    @PostMapping("/editUser")
+    @PostMapping("/user/edit")
     public String saveEditedUser(User user) {
         userRepository.save(user);
         return "redirect:/";
     }
 
-    @RequestMapping("/deleteUser")
+    @RequestMapping("/user/delete")
     public String deleteUserFromDatabase(@RequestParam(name = "id") Long id) {
         User user = userRepository.getOne(id);
         if (user.getTaskList().isEmpty()) {
             userRepository.deleteById(id);
         } else {
-            return "redirect:/deleteError";
+            user.setActive(false);
+            userRepository.save(user);
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/user/details")
+    public String showUserDetails(@RequestParam(name = "id") Long id, Model model) {
+        User user = userRepository.getOne(id);
+        model.addAttribute("user", user);
+        return "user/details";
     }
 }

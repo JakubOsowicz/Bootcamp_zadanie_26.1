@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout.html}">
+      layout:decorate="~{/layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>Nowe zadanie</title>
@@ -12,7 +12,7 @@
 <body>
 <section layout:fragment="content" class="addEdit">
     <h3>Nowe zadanie</h3>
-    <form th:action="@{/addTask}" method="POST" th:object="${task}">
+    <form th:action="@{/task/add}" method="POST" th:object="${task}">
         <div class="mb-3">
             <label for="taskName" class="form-label" >Nazwa zadania</label>
             <input type="text" id="taskName" class="form-control" th:field="*{name}" required/>
@@ -31,7 +31,7 @@
         <div hidden="hidden" class="mb-3">
             <label for="taskStatus" class="form-label">Status zadania</label>
             <select id="taskStatus" class="form-select" th:field="*{status}">
-                <option th:each="status: ${T(pl.osowicz.task_manager.Status).values()}" th:value="${status}" th:text="${status.getPlName()}"></option>
+                <option th:each="status: ${T(pl.osowicz.task_manager.Task.Status).values()}" th:value="${status}" th:text="${status.getPlName()}"></option>
             </select>
         </div>
         <div class="mb-3">
