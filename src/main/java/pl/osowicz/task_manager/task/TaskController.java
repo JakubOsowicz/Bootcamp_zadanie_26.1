@@ -1,13 +1,10 @@
-package pl.osowicz.task_manager.Task;
+package pl.osowicz.task_manager.task;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import pl.osowicz.task_manager.User.User;
-import pl.osowicz.task_manager.User.UserRepository;
+import org.springframework.web.bind.annotation.*;
+import pl.osowicz.task_manager.user.User;
+import pl.osowicz.task_manager.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +28,7 @@ public class TaskController {
 
     @GetMapping("/task/add")
     public String addTask(Model model) {
-        List<User> users = userRepository.findAllByActiveIsTrue();
+        List<User> users = userRepository.findAllByActive(true);
         Task task = new Task();
         model.addAttribute("task", task);
         model.addAttribute("users", users);
@@ -83,7 +80,7 @@ public class TaskController {
     public String editTask(@RequestParam(name = "id") Long id, Model model, Status status) {
         Optional<Task> task = taskRepository.findById(id);
         if (task.isPresent()) {
-            List<User> users = userRepository.findAllByActiveIsTrue();
+            List<User> users = userRepository.findAllByActive(true);
             model.addAttribute("task", task.get());
             model.addAttribute("users", users);
             model.addAttribute("listStatus", status);
@@ -100,7 +97,7 @@ public class TaskController {
         return redirectToPreviousTaskList(listStatus);
     }
 
-    @RequestMapping("/task/delete")
+    @DeleteMapping("/task/delete")
     public String deleteTaskFromDatabase(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus) {
         taskRepository.deleteById(id);
         return redirectToPreviousTaskList(listStatus);

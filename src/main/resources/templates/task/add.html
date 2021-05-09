@@ -31,7 +31,7 @@
         <div hidden="hidden" class="mb-3">
             <label for="taskStatus" class="form-label">Status zadania</label>
             <select id="taskStatus" class="form-select" th:field="*{status}">
-                <option th:each="status: ${T(pl.osowicz.task_manager.Task.Status).values()}" th:value="${status}" th:text="${status.getPlName()}"></option>
+                <option th:each="status: ${T(pl.osowicz.task_manager.task.Status).values()}" th:value="${status}" th:text="${status.getPlName()}"></option>
             </select>
         </div>
         <div class="mb-3">

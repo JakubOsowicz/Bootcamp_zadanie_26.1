@@ -1,4 +1,4 @@
-package pl.osowicz.task_manager.User;
+package pl.osowicz.task_manager.user;
 
 public enum UserRole {
     ADMIN("Administrator"),

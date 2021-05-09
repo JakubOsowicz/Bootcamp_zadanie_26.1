@@ -1,4 +1,4 @@
-package pl.osowicz.task_manager.Task;
+package pl.osowicz.task_manager.task;
 
 public enum Status {
     NOT_ASSIGNED("Nieprzypisane"),

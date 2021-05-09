@@ -25,8 +25,8 @@
                 <td th:text="*{email}"></td>
                 <td th:text="*{role}"></td>
                 <td>
-                    <span th:if="*{active == true}" th:text="Tak"></span>
-                    <span th:if="*{active == false}" th:text="Nie"></span>
+                    <span th:if="*{active}" th:text="Tak"></span>
+                    <span th:if="*{!active}" th:text="Nie"></span>
                 </td>
             </tr>
         </table>

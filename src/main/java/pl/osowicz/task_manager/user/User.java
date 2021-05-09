@@ -1,6 +1,6 @@
-package pl.osowicz.task_manager.User;
+package pl.osowicz.task_manager.user;
 
-import pl.osowicz.task_manager.Task.Task;
+import pl.osowicz.task_manager.task.Task;
 
 import javax.persistence.*;
 import java.util.List;

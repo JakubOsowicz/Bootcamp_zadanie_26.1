@@ -26,7 +26,7 @@
             <th></th>
         </tr>
         <tr th:each="task: ${tasks}"
-            th:style="${(task.deadLine.isBefore(#temporals.createNow()) and task.status!=T(pl.osowicz.task_manager.Task.Status).COMPLETED) ? 'color: rgb(255,78,78)' : 'color: rgb(0,0,0)'}">
+            th:style="${(task.deadLine.isBefore(#temporals.createNow()) and task.status!=T(pl.osowicz.task_manager.task.Status).COMPLETED) ? 'color: rgb(255,78,78)' : 'color: rgb(0,0,0)'}">
             <td th:text="${task.id}"></td>
             <td th:text="${task.name}"></td>
             <td th:text="${task.description}"></td>
@@ -38,7 +38,7 @@
             <td th:text="${#temporals.format(task.deadLine, 'dd.MM.yyyy HH:mm')}"></td>
             <td th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"></td>
             <td th:text="${task.status.getPlName()}"></td>
-            <td th:object="${status}" th:if="${status != T(pl.osowicz.task_manager.Task.Status).COMPLETED}">
+            <td th:object="${status}" th:if="${status != T(pl.osowicz.task_manager.task.Status).COMPLETED}">
                 <a th:href="@{/task/done(id=${task.id}, status=${status})}" title="Oznacz jako zrobione"><svg id="svg_check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-check2-square" viewBox="0 0 16 16">
                         <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
                         <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
