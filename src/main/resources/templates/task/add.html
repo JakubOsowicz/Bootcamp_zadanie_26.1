@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout.html}">
+      layout:decorate="~{/layout.html}" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Nowe zadanie</title>
@@ -14,25 +14,26 @@
     <h3>Nowe zadanie</h3>
     <form th:action="@{/task/add}" method="POST" th:object="${task}">
         <div class="mb-3">
-            <label for="taskName" class="form-label" >Nazwa zadania</label>
+            <label for="taskName" class="form-label">Nazwa zadania</label>
             <input type="text" id="taskName" class="form-control" th:field="*{name}" required/>
         </div>
         <div class="mb-3">
             <label for="taskDescription" class="form-label">Opis</label>
-            <textarea id="taskDescription" class="form-control" th:field="*{description}" maxlength="250" required></textarea>
+            <textarea id="taskDescription" class="form-control" th:field="*{description}" maxlength="250"
+                      required></textarea>
         </div>
         <div class="mb-3">
             <label for="assignedUser" class="form-label">Przypisz użytkownika</label>
-            <input list="assignedUser" class="form-control" />
-            <datalist id="assignedUser" class="form-select" th:field="*{user}">
-<!--                <option value="" th:hidden="true">Wybierz użytkownika</option>-->
-                <option th:each="user: ${users}" data-th-value="|${user.firstName} ${user.lastName}|" th:value="${user.id}"></option>
-            </datalist>
+            <select id="assignedUser" class="form-select" th:field="*{user}" required>
+            <option value="" th:hidden="true">Wybierz użytkownika</option>
+            <option th:each="user: ${users}" th:text="|${user.firstName} ${user.lastName}|" th:value="${user.id}"></option>
+            </select>
         </div>
         <div hidden="hidden" class="mb-3">
             <label for="taskStatus" class="form-label">Status zadania</label>
             <select id="taskStatus" class="form-select" th:field="*{status}">
-                <option th:each="status: ${T(pl.osowicz.task_manager.task.Status).values()}" th:value="${status}" th:text="${status.getPlName()}"></option>
+                <option th:each="status: ${T(pl.osowicz.task_manager.task.Status).values()}" th:value="${status}"
+                        th:text="${status.getPlName()}"></option>
             </select>
         </div>
         <div class="mb-3">
@@ -45,6 +46,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Dodaj</button>
     </form>
-    </section>
+</section>
 </body>
 </html>

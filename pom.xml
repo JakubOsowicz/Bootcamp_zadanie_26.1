@@ -51,6 +51,10 @@
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>2.5.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
