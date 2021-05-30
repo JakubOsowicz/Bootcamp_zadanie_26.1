@@ -28,7 +28,7 @@ public class TaskController {
 
     @GetMapping("/task/add")
     public String addTask(Model model) {
-        List<User> users = userRepository.findAllByActive(true);
+        List<User> users = userRepository.findAllByDeleted(false);
         Task task = new Task();
         model.addAttribute("task", task);
         model.addAttribute("users", users);
@@ -80,7 +80,7 @@ public class TaskController {
     public String editTask(@RequestParam(name = "id") Long id, Model model, Status status) {
         Optional<Task> task = taskRepository.findById(id);
         if (task.isPresent()) {
-            List<User> users = userRepository.findAllByActive(true);
+            List<User> users = userRepository.findAllByDeleted(false);
             model.addAttribute("task", task.get());
             model.addAttribute("users", users);
             model.addAttribute("listStatus", status);
@@ -97,7 +97,7 @@ public class TaskController {
         return redirectToPreviousTaskList(listStatus);
     }
 
-    @DeleteMapping("/task/delete")
+    @RequestMapping("/task/delete")
     public String deleteTaskFromDatabase(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus) {
         taskRepository.deleteById(id);
         return redirectToPreviousTaskList(listStatus);

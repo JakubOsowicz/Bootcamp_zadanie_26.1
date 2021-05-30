@@ -23,20 +23,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Task> taskList;
 
-    @Column(nullable = false)
-    private boolean active = true;
+    @Column()
+    private boolean deleted = false;
 
     public User() {
     }
 
-    public User(Long id, String email, String firstName, String lastName, UserRole role, List<Task> taskList, boolean active) {
+    public User(Long id, String email, String firstName, String lastName, UserRole role, List<Task> taskList, boolean deleted) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.taskList = taskList;
-        this.active = active;
+        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -87,12 +87,12 @@ public class User {
         this.taskList = taskList;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setDeleted(boolean active) {
+        this.deleted = active;
     }
 
     @Override
@@ -104,11 +104,11 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return active == user.active && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && role == user.role && Objects.equals(taskList, user.taskList);
+        return deleted == user.deleted && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && role == user.role && Objects.equals(taskList, user.taskList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, role, taskList, active);
+        return Objects.hash(id, email, firstName, lastName, role, taskList, deleted);
     }
 }

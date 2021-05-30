@@ -1,5 +1,8 @@
-INSERT INTO user(first_Name, last_Name, role, active)
-VALUES ('Rick', 'Sanchez', 'USER', 'true'), ('Takeshi', 'Kovacs', 'USER', 'true'), ('Spinacz', 'z Worda', 'GUEST', 'true'), ('Ja', 'Osobiście', 'ADMIN', 'true');
+INSERT INTO user(first_Name, last_Name, role, deleted)
+VALUES ('Rick', 'Sanchez', 'USER', 'false'),
+       ('Takeshi', 'Kovacs', 'USER', 'false'),
+       ('Spinacz', 'z Worda', 'GUEST', 'false'),
+       ('Ja', 'Osobiście', 'ADMIN', 'false');
 
 INSERT INTO task(name, description, status, dead_line)
 VALUES ('Zrobić portal-Gun', 'Wytentegować ten dynks z tamtym wihajstrem i spadać', 'NOT_ASSIGNED', '2021-05-10 10:00'),

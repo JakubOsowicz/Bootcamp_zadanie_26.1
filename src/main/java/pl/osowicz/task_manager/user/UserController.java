@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/user/list")
     public String showUsers(Model model) {
-        List<User> users = userRepository.findAllByActive(true);
+        List<User> users = userRepository.findAllByDeleted(false);
         model.addAttribute("users", users);
         return "user/list";
     }
@@ -51,13 +51,13 @@ public class UserController {
         return "redirect:/";
     }
 
-    @DeleteMapping("/user/delete")
+    @RequestMapping("/user/delete")
     public String deleteUserFromDatabase(@RequestParam(name = "id") Long id) {
         User user = userRepository.getOne(id);
         if (user.getTaskList().isEmpty()) {
             userRepository.deleteById(id);
         } else {
-            user.setActive(false);
+            user.setDeleted(false);
             userRepository.save(user);
         }
         return "redirect:/";
