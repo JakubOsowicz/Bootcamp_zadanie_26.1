@@ -63,13 +63,13 @@ public class TaskController {
         return taskService.redirectToPreviousTaskList(listStatus);
     }
 
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public String deleteTaskFromDatabase(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus) {
         taskService.deleteById(id);
         return taskService.redirectToPreviousTaskList(listStatus);
     }
 
-    @RequestMapping("/done")
+    @PostMapping("/done")
     public String endTask(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus) {
         Task task = taskService.findById(id);
         taskService.setTaskStatusCompleted(task);

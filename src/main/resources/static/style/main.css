@@ -8,7 +8,7 @@ body {
 
 .content,
 .indexContent,
-.addEdit{
+.addEdit {
     flex: 1 0 auto;
 }
 
@@ -26,18 +26,40 @@ body {
 
 }
 
+#btn_check,
+#btn_details,
+#btn_edit,
+#btn_delete {
+    border: none !important;
+    background-color: transparent !important;
+    padding: 3px;
+}
+
+#btn_check:hover #svg_check,
 #svg_check:hover {
     fill: green
 }
 
+#btn_edit:hover #svg_edit,
 #svg_edit:hover {
     fill: blue
 }
 
+#btn_delete:hover #svg_delete,
 #svg_delete:hover {
     fill: red
 }
 
+#btn_details:hover #svg_details,
 #svg_details:hover {
     fill: orange;
+}
+
+#last_column_buttons {
+    width: 1px;
+    white-space: nowrap;
+}
+
+.btn_form {
+    display: inline;
 }

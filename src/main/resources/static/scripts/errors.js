@@ -12,7 +12,6 @@ $(document).ready(function() {
     $("#assignedUser option").each(function(i,el) {
         data[$(el).data("value")] = $(el).val();
     });
-// `data` : object of `data-value` : `value`
     console.log(data, $("#assignedUser option").val());
 
 

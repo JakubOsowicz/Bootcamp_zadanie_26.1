@@ -49,7 +49,7 @@ public class UserController {
         return "redirect:/";
     }
 
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public String deleteUserFromDatabase(@RequestParam(name = "id") Long id) {
         User user = userService.findById(id);
         userService.safeDelete(id, user);
