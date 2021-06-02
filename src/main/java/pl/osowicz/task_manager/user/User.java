@@ -5,6 +5,7 @@ import pl.osowicz.task_manager.task.Task;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -13,12 +14,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
+
+    private String password;
     private String firstName;
     private String lastName;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @OneToMany(mappedBy = "user")
+    private Set<UserRole> roles;
 
     @OneToMany(mappedBy = "user")
     private List<Task> taskList;
@@ -29,12 +32,13 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String email, String firstName, String lastName, UserRole role, List<Task> taskList, boolean deleted) {
+    public User(Long id, String email, String password, String firstName, String lastName, Set<UserRole> roles, List<Task> taskList, boolean deleted) {
         this.id = id;
         this.email = email;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
+        this.roles = roles;
         this.taskList = taskList;
         this.deleted = deleted;
     }
@@ -55,6 +59,14 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -71,12 +83,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public UserRole getRole() {
-        return role;
+    public Set<UserRole> getRoles() {
+        return roles;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setRole(Set<UserRole> roles) {
+        this.roles = roles;
     }
 
     public List<Task> getTaskList() {
@@ -97,18 +109,14 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return deleted == user.deleted && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && role == user.role && Objects.equals(taskList, user.taskList);
+        return deleted == user.deleted && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(roles, user.roles) && Objects.equals(taskList, user.taskList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, role, taskList, deleted);
+        return Objects.hash(id, email, password, firstName, lastName, roles, taskList, deleted);
     }
 }

@@ -32,7 +32,7 @@
         <div class="mb-3">
             <label for="userRole" class="form-label">Uprawnienia</label>
             <select id="userRole" class="form-select" th:field="*{role}">
-                <option th:each="role: ${T(pl.osowicz.task_manager.user.UserRole).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
+                <option th:each="role: ${T(pl.osowicz.task_manager.user.Role).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Zapisz</button>
