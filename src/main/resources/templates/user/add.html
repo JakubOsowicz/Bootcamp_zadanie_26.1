@@ -27,7 +27,7 @@
         </div>
         <div class="mb-3">
             <label for="userRole" class="form-label">Uprawnienia</label>
-            <select id="userRole" class="form-select" th:field="*{role}">
+            <select id="userRole" class="form-control" multiple="multiple" th:field="*{roleList}">
                 <option th:each="role: ${T(pl.osowicz.task_manager.user.Role).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
             </select>
         </div>

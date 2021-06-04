@@ -3,8 +3,10 @@ package pl.osowicz.task_manager.user;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.osowicz.task_manager.user.dtos.UserAddDto;
+import pl.osowicz.task_manager.user.dtos.UserEditDto;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user")
@@ -25,13 +27,15 @@ public class UserController {
 
     @GetMapping("/add")
     public String addUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+        UserAddDto userAddDto = new UserAddDto();
+        model.addAttribute("user", userAddDto);
         return "user/add";
     }
 
     @PostMapping("/add")
-    public String addUserToDatabase(User user) {
+    public String addUserToDatabase(UserAddDto userAddDto) {
+        List<Role> roles = userAddDto.getRoleList();
+        User user = userService.addDtoToUser(userAddDto);
         userService.save(user);
         return "redirect:/";
     }
@@ -39,12 +43,14 @@ public class UserController {
     @GetMapping("/edit")
     public String editUser(@RequestParam(name = "id") Long id, Model model) {
         User user = userService.findById(id);
-        model.addAttribute("user", user);
+        UserEditDto userEditDto = userService.userToEditDto(user);
+        model.addAttribute("user", userEditDto);
         return "user/edit";
     }
 
     @PostMapping("/edit")
-    public String saveEditedUser(User user) {
+    public String saveEditedUser(UserEditDto userEditDto) {
+        User user = userService.editDtoToUser(userEditDto);
         userService.save(user);
         return "redirect:/";
     }

@@ -1,6 +1,7 @@
 package pl.osowicz.task_manager.user;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class UserRole {
@@ -16,6 +17,11 @@ public class UserRole {
     private Role role;
 
     public UserRole() {
+    }
+
+    public UserRole(User user, Role role) {
+        this.user = user;
+        this.role = role;
     }
 
     public UserRole(Long id, User user, Role role) {
@@ -46,5 +52,13 @@ public class UserRole {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRole userRole = (UserRole) o;
+        return Objects.equals(user, userRole.user) && role == userRole.role;
     }
 }

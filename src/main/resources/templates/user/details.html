@@ -23,7 +23,9 @@
             <tr>
                 <td th:text="*{id}"></td>
                 <td th:text="*{email}"></td>
-                <td th:text="*{role}"></td>
+                <td>
+                    <span th:each="role: ${user.roles}" th:utext="${role.role.getPlName() + '&lt;/br&gt;'}"></span>
+                </td>
                 <td>
                     <span th:if="*{!deleted}" th:text="Tak"></span>
                     <span th:if="*{deleted}" th:text="Nie"></span>

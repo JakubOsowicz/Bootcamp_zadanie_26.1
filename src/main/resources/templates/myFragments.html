@@ -10,7 +10,11 @@
 <body>
 
 <div th:fragment="navbar" class="navbar">
-    <a th:href="@{/}"><button type="button" class="btn btn-light">Powrót do strony głównej</button></a>
+    <form th:action="@{/}" method="get"><button class="btn btn-light">Powrót do strony głównej</button></form>
+    <form th:action="@{/register}" method="get"><button class="btn btn-light">Załóż nowe konto</button></form>
+    <form th:action="@{/logout}" method="post"><button class="btn btn-light">Wyloguj</button></form>
+
+
 </div>
 
 <div th:fragment="footer" class="footer">

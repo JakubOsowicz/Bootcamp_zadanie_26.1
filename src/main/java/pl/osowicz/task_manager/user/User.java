@@ -20,7 +20,7 @@ public class User {
     private String lastName;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserRole> roles;
 
     @OneToMany(mappedBy = "user")

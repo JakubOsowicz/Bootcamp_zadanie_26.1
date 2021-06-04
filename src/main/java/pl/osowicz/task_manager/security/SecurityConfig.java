@@ -15,13 +15,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/register").permitAll()
                 .antMatchers("/style/**").permitAll()
+                .antMatchers("/scripts/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .usernameParameter("email")
-                    .loginPage("/login")
-                    .permitAll();
+                    .loginPage("/login").permitAll()
+                .and()
+                    .logout()
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll();
     }
 
     @Override
