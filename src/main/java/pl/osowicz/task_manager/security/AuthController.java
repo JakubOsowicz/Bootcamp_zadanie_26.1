@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.osowicz.task_manager.user.User;
 import pl.osowicz.task_manager.user.UserService;
-import pl.osowicz.task_manager.user.dtos.UserRegistrationDto;
+import pl.osowicz.task_manager.user.dtos.UserFrontDto;
 
 @Controller
 public class AuthController {
@@ -30,15 +30,14 @@ public class AuthController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("user", new UserRegistrationDto());
+        model.addAttribute("user", new UserFrontDto());
         return "security/register";
     }
 
     @PostMapping("/register")
-    public String processRegister(UserRegistrationDto userDto) {
-        User user = userService.registrationDtoToUser(userDto);
+    public String processRegister(UserFrontDto userFrontDto) {
+        User user = userService.registerDtoToUser(userFrontDto);
         userService.save(user);
-
         return "redirect:login";
     }
 }

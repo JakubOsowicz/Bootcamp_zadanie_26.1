@@ -2,9 +2,7 @@ package pl.osowicz.task_manager.user;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.osowicz.task_manager.user.dtos.UserAddDto;
-import pl.osowicz.task_manager.user.dtos.UserEditDto;
-import pl.osowicz.task_manager.user.dtos.UserRegistrationDto;
+import pl.osowicz.task_manager.user.dtos.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,8 +18,18 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getActiveUsers() {
-        return userRepository.findAllByDeleted(false);
+    public List<UserDto> getActiveUsersFullDto() {
+        return userRepository.findAllByDeleted(false)
+                .stream()
+                .map(user -> new UserDto(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getRoles()))
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDto> getActiveUsersDto() {
+        return userRepository.findAllByDeleted(false)
+                .stream()
+                .map(user -> new UserDto(user.getId(), user.getFirstName(), user.getLastName()))
+                .collect(Collectors.toList());
     }
 
     public void save(User user) {
@@ -46,12 +54,12 @@ public class UserService {
         }
     }
 
-    public User registrationDtoToUser(UserRegistrationDto userDto) {
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setPassword(encodePassword(userDto.getPassword()));
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
+    public User registerDtoToUser(UserFrontDto userFrontDto) {
+        String email = userFrontDto.getEmail();
+        String password = encodePassword(userFrontDto.getPassword());
+        String firstName = userFrontDto.getFirstName();
+        String lastName = userFrontDto.getLastName();
+        User user = new User(email, password, firstName, lastName);
         setDefaultRole(user);
         return user;
     }
@@ -65,38 +73,39 @@ public class UserService {
         user.setRole(new HashSet<>(roleList));
     }
 
-    public User addDtoToUser(UserAddDto userAddDto) {
-        User user = new User();
-        user.setEmail(userAddDto.getEmail());
-        user.setFirstName(userAddDto.getFirstName());
-        user.setLastName(userAddDto.getLastName());
-        Set<UserRole> roleSet = userAddDto.getRoleList().stream()
+    public User addFrontDtoToUser(UserFrontDto userFrontDto) {
+        String email = userFrontDto.getEmail();
+        String firstName = userFrontDto.getFirstName();
+        String lastName = userFrontDto.getLastName();
+        User user = new User(email, firstName, lastName);
+        Set<UserRole> roleSet = userFrontDto.getRoleList()
+                .stream()
                 .map(role -> new UserRole(user, role))
                 .collect(Collectors.toSet());
         user.setRole(roleSet);
         return user;
     }
 
-    public UserEditDto userToEditDto(User user) {
-        UserEditDto userEditDto = new UserEditDto();
-        userEditDto.setId(user.getId());
-        userEditDto.setEmail(user.getEmail());
-        userEditDto.setFirstName(user.getFirstName());
-        userEditDto.setLastName(user.getLastName());
-        List<Role> roleList = user.getRoles().stream()
+    public UserFrontDto userToFrontDto(User user) {
+        Long id = user.getId();
+        String email = user.getEmail();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        List<Role> roleList = user.getRoles()
+                .stream()
                 .map(UserRole::getRole)
                 .collect(Collectors.toList());
-        userEditDto.setRoleList(roleList);
-        return userEditDto;
+        return new UserFrontDto(id, email, firstName, lastName, roleList);
     }
 
-    public User editDtoToUser(UserEditDto userEditDto) {
-        User user = findById(userEditDto.getId());
-        user.setId(userEditDto.getId());
-        user.setFirstName(userEditDto.getFirstName());
-        user.setLastName(userEditDto.getLastName());
+    public User frontDtoToUser(UserFrontDto userFrontDto) {
+        User user = findById(userFrontDto.getId());
+        user.setId(userFrontDto.getId());
+        user.setFirstName(userFrontDto.getFirstName());
+        user.setLastName(userFrontDto.getLastName());
         user.getRoles().clear();
-        Set<UserRole> roleSet = userEditDto.getRoleList().stream()
+        Set<UserRole> roleSet = userFrontDto.getRoleList()
+                .stream()
                 .map(role -> new UserRole(user, role))
                 .collect(Collectors.toSet());
         user.getRoles().addAll(roleSet);

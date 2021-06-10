@@ -2,10 +2,12 @@ package pl.osowicz.task_manager.task;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.osowicz.task_manager.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -78,5 +80,37 @@ public class TaskService {
         } else {
             return "redirect:/task/list?status=" + listStatus;
         }
+    }
+
+    public List<TaskDto> getListOfTaskDtos(Status status) {
+        List<Task> tasks = getCustomTaskList(status);
+        return tasks
+                .stream()
+                .map(this::taskToDto)
+                .collect(Collectors.toList());
+    }
+
+    public TaskDto taskToDto(Task task) {
+        Long id = task.getId();
+        String name = task.getName();
+        String description = task.getDescription();
+        User user = task.getUser();
+        Status status = task.getStatus();
+        LocalDateTime startDate = task.getStartDate();
+        LocalDateTime endDate = task.getEndDate();
+        LocalDateTime deadLine = task.getDeadLine();
+        return new TaskDto(id, name, description, user, status, startDate, endDate, deadLine);
+    }
+
+    public Task dtoToTask(TaskDto taskDto) {
+        Long id = taskDto.getId();
+        String name = taskDto.getName();
+        String description = taskDto.getDescription();
+        User user = taskDto.getUser();
+        Status status = taskDto.getStatus();
+        LocalDateTime startDate = taskDto.getStartDate();
+        LocalDateTime endDate = taskDto.getEndDate();
+        LocalDateTime deadLine = taskDto.getDeadLine();
+        return new Task(id, name, description, user, status, startDate, endDate, deadLine);
     }
 }

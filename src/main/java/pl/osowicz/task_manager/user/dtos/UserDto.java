@@ -1,46 +1,35 @@
-package pl.osowicz.task_manager.user;
+package pl.osowicz.task_manager.user.dtos;
 
 import pl.osowicz.task_manager.task.Task;
+import pl.osowicz.task_manager.user.UserRole;
 
-import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
-@Entity
-public class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
-
     private String password;
     private String firstName;
     private String lastName;
-
-    @Column(nullable = false)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserRole> roles;
-
-    @OneToMany(mappedBy = "user")
     private List<Task> taskList;
-
-    @Column()
     private boolean deleted = false;
 
-    public User() {
+    public UserDto() {
     }
 
-    public User(String email, String password, String firstName, String lastName) {
-        this(null, email, password, firstName, lastName, null, null, false);
+    public UserDto(Long id, String firstName, String lastName) {
+        this(id, null, null, firstName, lastName, null, null, false);
     }
 
-    public User(String email, String firstName, String lastName) {
-        this(email, null, firstName, lastName);
+
+    public UserDto(Long id, String email, String firstName, String lastName, Set<UserRole> roles) {
+        this(id, email, null, firstName, lastName, roles, null, false);
     }
 
-    public User(Long id, String email, String password, String firstName, String lastName, Set<UserRole> roles, List<Task> taskList, boolean deleted) {
+    public UserDto(Long id, String email, String password, String firstName, String lastName, Set<UserRole> roles, List<Task> taskList, boolean deleted) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -95,7 +84,7 @@ public class User {
         return roles;
     }
 
-    public void setRole(Set<UserRole> roles) {
+    public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
 
@@ -111,20 +100,7 @@ public class User {
         return deleted;
     }
 
-    public void setDeleted(boolean active) {
-        this.deleted = active;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return deleted == user.deleted && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(roles, user.roles) && Objects.equals(taskList, user.taskList);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, password, firstName, lastName, roles, taskList, deleted);
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

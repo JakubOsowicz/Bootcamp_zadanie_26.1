@@ -2,11 +2,14 @@ package pl.osowicz.task_manager.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import pl.osowicz.task_manager.user.dtos.UserAddDto;
-import pl.osowicz.task_manager.user.dtos.UserEditDto;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import pl.osowicz.task_manager.user.dtos.UserDto;
+import pl.osowicz.task_manager.user.dtos.UserFrontDto;
 
-import java.util.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -20,22 +23,21 @@ public class UserController {
 
     @GetMapping("/list")
     public String showUsers(Model model) {
-        List<User> users = userService.getActiveUsers();
-        model.addAttribute("users", users);
+        List<UserDto> usersDto = userService.getActiveUsersFullDto();
+        model.addAttribute("users", usersDto);
         return "user/list";
     }
 
     @GetMapping("/add")
     public String addUser(Model model) {
-        UserAddDto userAddDto = new UserAddDto();
-        model.addAttribute("user", userAddDto);
+        UserFrontDto userFrontDto = new UserFrontDto();
+        model.addAttribute("user", userFrontDto);
         return "user/add";
     }
 
     @PostMapping("/add")
-    public String addUserToDatabase(UserAddDto userAddDto) {
-        List<Role> roles = userAddDto.getRoleList();
-        User user = userService.addDtoToUser(userAddDto);
+    public String addUserToDatabase(UserFrontDto userFrontDto) {
+        User user = userService.addFrontDtoToUser(userFrontDto);
         userService.save(user);
         return "redirect:/";
     }
@@ -43,14 +45,14 @@ public class UserController {
     @GetMapping("/edit")
     public String editUser(@RequestParam(name = "id") Long id, Model model) {
         User user = userService.findById(id);
-        UserEditDto userEditDto = userService.userToEditDto(user);
-        model.addAttribute("user", userEditDto);
+        UserFrontDto userFrontDto = userService.userToFrontDto(user);
+        model.addAttribute("user", userFrontDto);
         return "user/edit";
     }
 
     @PostMapping("/edit")
-    public String saveEditedUser(UserEditDto userEditDto) {
-        User user = userService.editDtoToUser(userEditDto);
+    public String saveEditedUser(UserFrontDto userFrontDto) {
+        User user = userService.frontDtoToUser(userFrontDto);
         userService.save(user);
         return "redirect:/";
     }

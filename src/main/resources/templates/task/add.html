@@ -24,16 +24,9 @@
         </div>
         <div class="mb-3">
             <label for="assignedUser" class="form-label">Przypisz użytkownika</label>
-            <select id="assignedUser" class="form-select" th:field="*{user}" required>
+            <select id="assignedUser" class="form-select" th:field="*{user}">
             <option value="" th:hidden="true">Wybierz użytkownika</option>
             <option th:each="user: ${users}" th:text="|${user.firstName} ${user.lastName}|" th:value="${user.id}"></option>
-            </select>
-        </div>
-        <div hidden="hidden" class="mb-3">
-            <label for="taskStatus" class="form-label">Status zadania</label>
-            <select id="taskStatus" class="form-select" th:field="*{status}">
-                <option th:each="status: ${T(pl.osowicz.task_manager.task.Status).values()}" th:value="${status}"
-                        th:text="${status.getPlName()}"></option>
             </select>
         </div>
         <div class="mb-3">

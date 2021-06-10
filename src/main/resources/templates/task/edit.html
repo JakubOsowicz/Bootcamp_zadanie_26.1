@@ -31,19 +31,19 @@
     </div>
     <div>
         <label for="assignedUser" class="form-label">Przypisz użytkownika</label>
-        <select id="assignedUser" class="form-select"th:field="*{user}">
+        <select id="assignedUser" class="form-select" th:field="*{user}">
             <option value="" th:hidden="true">Przypisz użytkownika</option>
             <option th:each="user: ${users}" th:value="${user.id}"
                     th:text="|${user.firstName} ${user.lastName}|"></option>
         </select>
     </div>
-    <div hidden="hidden">
-        <label for="taskStatus" class="form-label">Status zadania</label>
-        <select id="taskStatus" class="form-select" th:field="*{status}">
-            <option th:each="status: ${T(pl.osowicz.task_manager.task.Status).values()}" th:value="${status}"
-                    th:text="${status.getPlName()}"></option>
-        </select>
-    </div>
+<!--    <div hidden="hidden">-->
+<!--        <label for="taskStatus" class="form-label">Status zadania</label>-->
+<!--        <select id="taskStatus" class="form-select" th:field="*{status}">-->
+<!--            <option th:each="status: ${T(pl.osowicz.task_manager.task.Status).values()}" th:value="${status}"-->
+<!--                    th:text="${status.getPlName()}"></option>-->
+<!--        </select>-->
+<!--    </div>-->
     <div>
         <label for="startDate" class="form-label">Rozpoczęcie zadania</label>
         <input type="datetime-local" id="startDate" class="form-control" th:field="*{startDate}">
