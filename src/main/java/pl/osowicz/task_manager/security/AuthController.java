@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.osowicz.task_manager.user.User;
 import pl.osowicz.task_manager.user.UserService;
+import pl.osowicz.task_manager.user.dtos.UserDto;
 import pl.osowicz.task_manager.user.dtos.UserFrontDto;
 
 @Controller
@@ -19,7 +20,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserDto());
         return "security/login";
     }
 

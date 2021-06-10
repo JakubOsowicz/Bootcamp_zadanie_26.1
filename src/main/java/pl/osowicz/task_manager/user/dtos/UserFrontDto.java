@@ -1,8 +1,11 @@
 package pl.osowicz.task_manager.user.dtos;
 
+import pl.osowicz.task_manager.task.Task;
 import pl.osowicz.task_manager.user.Role;
+import pl.osowicz.task_manager.user.UserRole;
 
 import java.util.List;
+import java.util.Set;
 
 public class UserFrontDto {
 
@@ -15,14 +18,6 @@ public class UserFrontDto {
 
     public UserFrontDto() {
     }
-
-//    public UserFrontDto(String email, String firstName, String lastName, List<Role> roleList) {
-//        this(null, email, null, firstName, lastName, roleList);
-//    }
-//
-//    public UserFrontDto(String email, String password, String firstName, String lastName) {
-//        this(null, email, password, firstName, lastName, null);
-//    }
 
     public UserFrontDto(Long id, String email, String firstName, String lastName, List<Role> roleList) {
         this(id, email, null, firstName, lastName, roleList);

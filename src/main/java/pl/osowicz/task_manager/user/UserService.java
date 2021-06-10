@@ -2,6 +2,7 @@ package pl.osowicz.task_manager.user;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.osowicz.task_manager.task.Task;
 import pl.osowicz.task_manager.user.dtos.*;
 
 import java.util.*;
@@ -110,5 +111,16 @@ public class UserService {
                 .collect(Collectors.toSet());
         user.getRoles().addAll(roleSet);
         return user;
+    }
+
+    public UserDto userToDto(User user) {
+        Long id = user.getId();
+        String email = user.getEmail();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        Set<UserRole> roles = user.getRoles();
+        List<Task> taskList = user.getTaskList();
+        boolean deleted = user.isDeleted();
+        return new UserDto(id, email, firstName, lastName, roles, taskList, deleted);
     }
 }

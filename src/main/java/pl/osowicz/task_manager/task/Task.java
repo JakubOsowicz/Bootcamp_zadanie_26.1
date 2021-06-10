@@ -42,10 +42,6 @@ public class Task {
     public Task() {
     }
 
-//    public Task(String name, String description, User user, LocalDateTime startDate, LocalDateTime deadLine) {
-//        this(null, name, description, user, null, startDate, null, deadLine);
-//    }
-
     public Task(Long id, String name, String description, User user, Status status, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime deadLine) {
         this.id = id;
         this.name = name;

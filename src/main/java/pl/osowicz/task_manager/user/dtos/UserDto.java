@@ -24,9 +24,12 @@ public class UserDto {
         this(id, null, null, firstName, lastName, null, null, false);
     }
 
-
     public UserDto(Long id, String email, String firstName, String lastName, Set<UserRole> roles) {
         this(id, email, null, firstName, lastName, roles, null, false);
+    }
+
+    public UserDto(Long id, String email, String firstName, String lastName, Set<UserRole> roles, List<Task> taskList, boolean deleted) {
+        this(id, email, null, firstName, lastName, roles, taskList, deleted);
     }
 
     public UserDto(Long id, String email, String password, String firstName, String lastName, Set<UserRole> roles, List<Task> taskList, boolean deleted) {

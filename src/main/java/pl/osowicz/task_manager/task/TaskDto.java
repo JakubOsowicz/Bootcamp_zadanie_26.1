@@ -27,10 +27,6 @@ public class TaskDto {
     public TaskDto() {
     }
 
-//    public TaskDto(String name, String description, User user, LocalDateTime startDate, LocalDateTime deadLine) {
-//        this(null, name, description, user, null, startDate, null, deadLine);
-//    }
-
     public TaskDto(Long id, String name, String description, User user, Status status, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime deadLine) {
         this.id = id;
         this.name = name;

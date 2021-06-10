@@ -67,7 +67,8 @@ public class UserController {
     @GetMapping("/details")
     public String showUserDetails(@RequestParam(name = "id") Long id, Model model) {
         User user = userService.findById(id);
-        model.addAttribute("user", user);
+        UserDto userDto = userService.userToDto(user);
+        model.addAttribute("user", userDto);
         return "user/details";
     }
 }
