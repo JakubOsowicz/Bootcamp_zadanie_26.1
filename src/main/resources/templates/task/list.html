@@ -32,9 +32,24 @@
             <td th:text="${task.description}"></td>
             <td>
                 <span th:if="${task.user != null}" th:text="|${task.user.firstName} ${task.user.lastName}|"></span>
-                <span th:unless="${task.user != null}"> </span>
+                <span th:unless="${task.user != null}">
+                    <form th:action="@{/task/take(id=${task.id}, status=${status})}" method="post">
+                        <button class="btn btn-outline-dark">Podejmij wyzwanie</button>
+                    </form>
+                </span>
             </td>
-            <td th:text="${#temporals.format(task.startDate, 'dd.MM.yyyy HH:mm')}"></td>
+            <td>
+                <span th:if="${task.user == null}"> </span>
+                <span th:unless="${task.user == null}">
+                    <span th:if="${(#authentication.getPrincipal().getUsername == task.user.email) and (task.startDate == null)}">
+                        <form th:action="@{/task/start(id=${task.id}, status=${status}, myTasks='true')}" method="post">
+                            <button class="btn btn-outline-dark">Rozpocznij</button>
+                        </form>
+                    </span>
+                    <span th:unless="${(#authentication.getPrincipal().getUsername == task.user.email) and (task.startDate == null)}"
+                          th:text="${#temporals.format(task.startDate, 'dd.MM.yyyy HH:mm')}"></span>
+                </span>
+            </td>
             <td th:text="${#temporals.format(task.deadLine, 'dd.MM.yyyy HH:mm')}"></td>
             <td th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"></td>
             <td th:text="${task.status.getPlName()}"></td>
@@ -50,8 +65,8 @@
                     </button>
                 </form>
                 <form class="btn_form" th:action="@{/task/edit}" th:method="get">
-                    <input type="hidden" th:value="${task.id}", name="id"/>
-                    <input type="hidden" th:value="${status}", name="status"/>
+                    <input type="hidden" th:value="${task.id}" , name="id"/>
+                    <input type="hidden" th:value="${status}" , name="status"/>
                     <button class="btn btn-outline-warning" id="btn_edit" title="Edytuj">
                         <svg id="svg_edit" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black"
                              class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -62,7 +77,8 @@
                     </button>
                 </form>
                 <form class="btn_form" th:action="@{/task/delete(id=${task.id}, status=${status})}" th:method="post">
-                    <button class="btn btn-outline-danger" id="btn_delete" th:onclick="return (deleteTask())" title="Usuń">
+                    <button class="btn btn-outline-danger" id="btn_delete" th:onclick="return (deleteTask())"
+                            title="Usuń">
                         <svg id="svg_delete" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black"
                              class="bi bi-trash" viewBox="0 0 16 16">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>

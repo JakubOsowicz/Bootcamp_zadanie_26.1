@@ -3,7 +3,8 @@ package pl.osowicz.task_manager.user;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.osowicz.task_manager.task.Task;
-import pl.osowicz.task_manager.user.dtos.*;
+import pl.osowicz.task_manager.user.dtos.UserDto;
+import pl.osowicz.task_manager.user.dtos.UserFrontDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,6 +18,11 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public User findByEmail(String email) {
+        Optional<User> user = userRepository.findAllByEmail(email);
+        return user.orElseThrow();
     }
 
     public List<UserDto> getActiveUsersFullDto() {

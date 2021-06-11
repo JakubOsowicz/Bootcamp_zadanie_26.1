@@ -22,7 +22,7 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    List<Task> findAllByStatus(Status status) {
+    public List<Task> findAllByStatus(Status status) {
         return taskRepository.findAllByAndStatusEquals(status);
     }
 
@@ -31,7 +31,7 @@ public class TaskService {
         return task.orElse(null);
     }
 
-    List<Task> getCustomTaskList(Status status) {
+    public List<TaskDto> findAllByStatusDto(Status status) {
         List<Task> tasks;
         if (status == null) {
             tasks = findAll();
@@ -40,7 +40,16 @@ public class TaskService {
         } else {
             tasks = findAllNotCompletedTasks();
         }
-        return tasks;
+        return tasks
+                .stream()
+                .map(this::taskToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<TaskDto> getUnassignedTasksDto() {
+        return findAllByStatus(Status.NOT_ASSIGNED)
+                .stream()
+                .map(task -> new TaskDto(task.getId(), task.getName())).collect(Collectors.toList());
     }
 
     void saveTask(Task task) {
@@ -50,6 +59,12 @@ public class TaskService {
     void setTaskStatusCompleted(Task task) {
         task.setStatus(Status.COMPLETED);
         task.setEndDate(LocalDateTime.now());
+        saveTask(task);
+    }
+
+    void setTaskStatusStarted(Task task) {
+        task.setStatus(Status.STARTED);
+        task.setStartDate(LocalDateTime.now());
         saveTask(task);
     }
 
@@ -66,8 +81,15 @@ public class TaskService {
         }
     }
 
-    List<Task> findAllNotCompletedTasks() {
+    public List<Task> findAllNotCompletedTasks() {
         return taskRepository.findAllByStatusIsNotOrderByDeadLine(Status.COMPLETED);
+    }
+
+    public List<TaskDto> getUserNotCompletedTasksDto(User user) {
+        return user.getTaskList().stream()
+                .filter(task -> task.getStatus() != Status.COMPLETED)
+                .map(this::taskToDto)
+                .collect(Collectors.toList());
     }
 
     void deleteById(Long id) {
@@ -82,12 +104,11 @@ public class TaskService {
         }
     }
 
-    public List<TaskDto> getListOfTaskDtos(Status status) {
-        List<Task> tasks = getCustomTaskList(status);
-        return tasks
-                .stream()
-                .map(this::taskToDto)
-                .collect(Collectors.toList());
+    public void assignTaskToUser(User currentUser, Long id) {
+        Task task = findById(id);
+        task.setUser(currentUser);
+        setTaskStatus(task);
+        saveTask(task);
     }
 
     public TaskDto taskToDto(Task task) {
