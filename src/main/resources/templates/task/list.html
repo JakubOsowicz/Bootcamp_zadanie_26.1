@@ -42,7 +42,8 @@
                 <span th:if="${task.user == null}"> </span>
                 <span th:unless="${task.user == null}">
                     <span th:if="${(#authentication.getPrincipal().getUsername == task.user.email) and (task.startDate == null)}">
-                        <form th:action="@{/task/start(id=${task.id}, status=${status}, myTasks=${myTasks})}" method="post">
+                        <form th:action="@{/task/start(id=${task.id}, status=${status}, myTasks=${myTasks})}"
+                              method="post">
                             <button class="btn btn-outline-dark">Rozpocznij</button>
                         </form>
                     </span>
@@ -59,7 +60,9 @@
             <td th:text="${task.status.getPlName()}"></td>
             <td id="last_column_buttons" th:object="${status}"
                 th:if="${status != T(pl.osowicz.task_manager.task.Status).COMPLETED}">
-                <form class="btn_form" th:action="@{/task/done(id=${task.id}, status=${status})}" th:method="post">
+                <span th:if="${(task.user != null) and (task.startDate != null) and (task.status != T(pl.osowicz.task_manager.task.Status).COMPLETED)}">
+                <span th:if="${(#authentication.getPrincipal().getUsername == task.user.email)}">
+                <form class="btn_form" th:action="@{/task/done(id=${task.id}, status=${status}, myTasks=${myTasks})}" th:method="post">
                     <button class="btn btn-outline-success" id="btn_check" title="Oznacz jako zrobione">
                         <svg id="svg_check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black"
                              class="bi bi-check2-square" viewBox="0 0 16 16">
@@ -68,9 +71,12 @@
                         </svg>
                     </button>
                 </form>
+                    </span>
+                    </span>
                 <form class="btn_form" th:action="@{/task/edit}" th:method="get">
-                    <input type="hidden" th:value="${task.id}" , name="id"/>
-                    <input type="hidden" th:value="${status}" , name="status"/>
+                    <input type="hidden" th:value="${task.id}" name="id"/>
+                    <input type="hidden" th:value="${status}" name="status"/>
+                    <input type="hidden" th:value="${myTasks}" name="myTasks"/>
                     <button class="btn btn-outline-warning" id="btn_edit" title="Edytuj">
                         <svg id="svg_edit" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black"
                              class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -80,7 +86,7 @@
                         </svg>
                     </button>
                 </form>
-                <form class="btn_form" th:action="@{/task/delete(id=${task.id}, status=${status})}" th:method="post">
+                <form class="btn_form" th:action="@{/task/delete(id=${task.id}, status=${status}, myTasks=${myTasks})}" th:method="post">
                     <button class="btn btn-outline-danger" id="btn_delete" th:onclick="return (deleteTask())"
                             title="Usuń">
                         <svg id="svg_delete" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black"

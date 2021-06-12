@@ -10,6 +10,7 @@ import java.util.Objects;
 @Entity
 public class Task {
 
+    @Transient
     private final String datePattern = "yyyy-MM-dd'T'HH:mm";
 
     @Id

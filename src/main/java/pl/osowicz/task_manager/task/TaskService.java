@@ -98,8 +98,11 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    String redirectToPreviousTaskList(@RequestParam(name = "status", required = false) Status listStatus) {
-        if (listStatus == null) {
+    String redirectToPreviousTaskList(@RequestParam(name = "status", required = false) Status listStatus,
+                                      @RequestParam(name = "myTasks", required = false) String myTasks) {
+        if (!myTasks.isEmpty()) {
+            return "redirect:myTasks";
+        } else if (listStatus == null) {
             return "redirect:/task/list?status=";
         } else {
             return "redirect:/task/list?status=" + listStatus;

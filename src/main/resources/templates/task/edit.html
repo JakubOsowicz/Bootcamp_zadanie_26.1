@@ -12,7 +12,7 @@
 <body>
 <section layout:fragment="content" class="addEdit">
 <h3>Edytuj zadanie</h3>
-<form th:action="@{/task/edit(status=${listStatus})}" method="POST" th:object="${task}">
+<form th:action="@{/task/edit(status=${listStatus}, myTasks=${myTasks})}" method="POST" th:object="${task}">
     <div hidden="hidden">
         <label for="taskId" class="form-label">id</label>
         <input type="number" id="taskId" class="form-control" th:value="*{id}" th:field="*{id}">
@@ -37,13 +37,6 @@
                     th:text="|${user.firstName} ${user.lastName}|"></option>
         </select>
     </div>
-<!--    <div hidden="hidden">-->
-<!--        <label for="taskStatus" class="form-label">Status zadania</label>-->
-<!--        <select id="taskStatus" class="form-select" th:field="*{status}">-->
-<!--            <option th:each="status: ${T(pl.osowicz.task_manager.task.Status).values()}" th:value="${status}"-->
-<!--                    th:text="${status.getPlName()}"></option>-->
-<!--        </select>-->
-<!--    </div>-->
     <div>
         <label for="startDate" class="form-label">Rozpoczęcie zadania</label>
         <input type="datetime-local" id="startDate" class="form-control" th:field="*{startDate}">

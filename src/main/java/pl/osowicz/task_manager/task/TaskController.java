@@ -52,37 +52,43 @@ public class TaskController {
     }
 
     @GetMapping("/edit")
-    public String editTask(@RequestParam(name = "id") Long id, Model model, Status status) {
+    public String editTask(@RequestParam(name = "id") Long id, Model model, Status status,
+                           @RequestParam(name = "myTasks", required = false) String myTasks) {
         Task task = taskService.findById(id);
         TaskDto taskDto = taskService.taskToDto(task);
         List<UserDto> usersDto = userService.getActiveUsersSimpleDto();
         model.addAttribute("task", taskDto);
         model.addAttribute("users", usersDto);
         model.addAttribute("listStatus", status);
+        model.addAttribute("myTasks", myTasks);
         return "task/edit";
     }
 
     @PostMapping("/edit")
-    public String saveEditedTask(TaskDto taskDto, @RequestParam(name = "status", required = false) Status listStatus) {
+    public String saveEditedTask(TaskDto taskDto,
+                                 @RequestParam(name = "status", required = false) Status listStatus,
+                                 @RequestParam(name = "myTasks", required = false) String myTasks) {
         Task task = taskService.dtoToTask(taskDto);
         taskService.setTaskStatus(task);
         taskService.saveTask(task);
-        return taskService.redirectToPreviousTaskList(listStatus);
+        return taskService.redirectToPreviousTaskList(listStatus, myTasks);
     }
 
     @PostMapping("/delete")
     public String deleteTaskFromDatabase(@RequestParam(name = "id") Long id,
-                                         @RequestParam(name = "status", required = false) Status listStatus) {
+                                         @RequestParam(name = "status", required = false) Status listStatus,
+                                         @RequestParam(name = "myTasks", required = false) String myTasks) {
         taskService.deleteById(id);
-        return taskService.redirectToPreviousTaskList(listStatus);
+        return taskService.redirectToPreviousTaskList(listStatus, myTasks);
     }
 
     @PostMapping("/done")
     public String endTask(@RequestParam(name = "id") Long id,
-                          @RequestParam(name = "status", required = false) Status listStatus) {
+                          @RequestParam(name = "status", required = false) Status listStatus,
+                          @RequestParam(name = "myTasks", required = false) String myTasks) {
         Task task = taskService.findById(id);
         taskService.setTaskStatusCompleted(task);
-        return taskService.redirectToPreviousTaskList(listStatus);
+        return taskService.redirectToPreviousTaskList(listStatus, myTasks);
     }
 
     @PostMapping("/take")
@@ -90,7 +96,7 @@ public class TaskController {
                            @RequestParam(name = "status", required = false) Status listStatus) {
         User currentUser = userService.findByEmail(principal.getName());
         taskService.assignTaskToUser(currentUser, id);
-        return taskService.redirectToPreviousTaskList(listStatus);
+        return taskService.redirectToPreviousTaskList(listStatus, "");
     }
 
     @RequestMapping("/myTasks")
@@ -106,9 +112,6 @@ public class TaskController {
     public String startTask(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus,
                             @RequestParam(name = "myTasks", required = false) String myTasks) {
         taskService.setTaskStatusStarted(taskService.findById(id));
-        if (!myTasks.isEmpty()) {
-            return "redirect:myTasks";
-        }
-        return taskService.redirectToPreviousTaskList(listStatus);
+        return taskService.redirectToPreviousTaskList(listStatus, myTasks);
     }
 }

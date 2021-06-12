@@ -58,6 +58,7 @@ body {
 #last_column_buttons {
     width: 1px;
     white-space: nowrap;
+    text-align: right;
 }
 
 .btn_form {
