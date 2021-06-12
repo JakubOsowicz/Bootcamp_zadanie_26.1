@@ -42,7 +42,7 @@
                 <span th:if="${task.user == null}"> </span>
                 <span th:unless="${task.user == null}">
                     <span th:if="${(#authentication.getPrincipal().getUsername == task.user.email) and (task.startDate == null)}">
-                        <form th:action="@{/task/start(id=${task.id}, status=${status}, myTasks='true')}" method="post">
+                        <form th:action="@{/task/start(id=${task.id}, status=${status}, myTasks=${myTasks})}" method="post">
                             <button class="btn btn-outline-dark">Rozpocznij</button>
                         </form>
                     </span>
@@ -51,7 +51,11 @@
                 </span>
             </td>
             <td th:text="${#temporals.format(task.deadLine, 'dd.MM.yyyy HH:mm')}"></td>
-            <td th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"></td>
+            <td>
+                <span th:if="${task.endDate != null}" th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"
+                      th:style="${(task.deadLine.isBefore(task.endDate)) ? 'color: rgb(255,78,78)' : 'color: rgb(0,0,0)'}"></span>
+                <span th:unless="${task.endDate != null}"> </span>
+            </td>
             <td th:text="${task.status.getPlName()}"></td>
             <td id="last_column_buttons" th:object="${status}"
                 th:if="${status != T(pl.osowicz.task_manager.task.Status).COMPLETED}">

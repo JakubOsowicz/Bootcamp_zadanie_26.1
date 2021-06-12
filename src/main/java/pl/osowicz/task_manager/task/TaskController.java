@@ -27,7 +27,7 @@ public class TaskController {
 
     @GetMapping("/add")
     public String addTask(Model model) {
-        List<UserDto> usersDto = userService.getActiveUsersDto();
+        List<UserDto> usersDto = userService.getActiveUsersSimpleDto();
         model.addAttribute("task", new TaskDto());
         model.addAttribute("users", usersDto);
         return "/task/add";
@@ -42,10 +42,12 @@ public class TaskController {
     }
 
     @GetMapping("/list")
-    public String showTasks(@RequestParam(required = false) Status status, Model model) {
+    public String showTasks(@RequestParam(required = false) Status status, Model model,
+                            @RequestParam(name = "myTasks", required = false) String myTasks) {
         List<TaskDto> tasksDto = taskService.findAllByStatusDto(status);
         model.addAttribute("tasks", tasksDto);
         model.addAttribute("status", status);
+        model.addAttribute("myTasks", myTasks);
         return "/task/list";
     }
 
@@ -53,7 +55,7 @@ public class TaskController {
     public String editTask(@RequestParam(name = "id") Long id, Model model, Status status) {
         Task task = taskService.findById(id);
         TaskDto taskDto = taskService.taskToDto(task);
-        List<UserDto> usersDto = userService.getActiveUsersDto();
+        List<UserDto> usersDto = userService.getActiveUsersSimpleDto();
         model.addAttribute("task", taskDto);
         model.addAttribute("users", usersDto);
         model.addAttribute("listStatus", status);
@@ -96,6 +98,7 @@ public class TaskController {
         User user = userService.findByEmail(principal.getName());
         List<TaskDto> tasksDto = taskService.getUserNotCompletedTasksDto(user);
         model.addAttribute("tasks", tasksDto);
+        model.addAttribute("myTasks", "true");
         return "task/list";
     }
 
@@ -103,7 +106,7 @@ public class TaskController {
     public String startTask(@RequestParam(name = "id") Long id, @RequestParam(name = "status", required = false) Status listStatus,
                             @RequestParam(name = "myTasks", required = false) String myTasks) {
         taskService.setTaskStatusStarted(taskService.findById(id));
-        if (myTasks != null) {
+        if (!myTasks.isEmpty()) {
             return "redirect:myTasks";
         }
         return taskService.redirectToPreviousTaskList(listStatus);

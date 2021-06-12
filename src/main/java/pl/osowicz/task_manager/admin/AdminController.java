@@ -26,7 +26,7 @@ public class AdminController {
 
     @GetMapping("/assignTask")
     public String assignTask(Model model) {
-        List<UserDto> usersDto = userService.getActiveUsersDto();
+        List<UserDto> usersDto = userService.getActiveUsersSimpleDto();
         List<TaskDto> tasksDto = taskService.getUnassignedTasksDto();
         if (tasksDto.isEmpty()) {
             return "redirect:/";

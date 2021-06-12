@@ -25,6 +25,11 @@ public class UserService {
         return user.orElseThrow();
     }
 
+    public User findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
+    }
+
     public List<UserDto> getActiveUsersFullDto() {
         return userRepository.findAllByDeleted(false)
                 .stream()
@@ -32,7 +37,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<UserDto> getActiveUsersDto() {
+    public List<UserDto> getActiveUsersSimpleDto() {
         return userRepository.findAllByDeleted(false)
                 .stream()
                 .map(user -> new UserDto(user.getId(), user.getFirstName(), user.getLastName()))
@@ -41,11 +46,6 @@ public class UserService {
 
     public void save(User user) {
         userRepository.save(user);
-    }
-
-    public User findById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.orElse(null);
     }
 
     void deleteById(Long id) {

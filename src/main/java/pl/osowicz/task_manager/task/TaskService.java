@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.osowicz.task_manager.user.User;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,13 +23,13 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public List<Task> findAllByStatus(Status status) {
-        return taskRepository.findAllByAndStatusEquals(status);
-    }
-
     Task findById(Long id) {
         Optional<Task> task = taskRepository.findById(id);
         return task.orElse(null);
+    }
+
+    public List<Task> findAllByStatus(Status status) {
+        return taskRepository.findAllByStatusEquals(status);
     }
 
     public List<TaskDto> findAllByStatusDto(Status status) {
@@ -49,7 +50,19 @@ public class TaskService {
     public List<TaskDto> getUnassignedTasksDto() {
         return findAllByStatus(Status.NOT_ASSIGNED)
                 .stream()
-                .map(task -> new TaskDto(task.getId(), task.getName())).collect(Collectors.toList());
+                .map(task -> new TaskDto(task.getId(), task.getName()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> findAllNotCompletedTasks() {
+        return taskRepository.findAllByStatusIsNotOrderByDeadLine(Status.COMPLETED);
+    }
+
+    public List<TaskDto> getUserNotCompletedTasksDto(User user) {
+        return user.getTaskList().stream()
+                .filter(task -> task.getStatus() != Status.COMPLETED)
+                .map(this::taskToDto)
+                .collect(Collectors.toList());
     }
 
     void saveTask(Task task) {
@@ -58,13 +71,13 @@ public class TaskService {
 
     void setTaskStatusCompleted(Task task) {
         task.setStatus(Status.COMPLETED);
-        task.setEndDate(LocalDateTime.now());
+        task.setEndDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         saveTask(task);
     }
 
     void setTaskStatusStarted(Task task) {
         task.setStatus(Status.STARTED);
-        task.setStartDate(LocalDateTime.now());
+        task.setStartDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         saveTask(task);
     }
 
@@ -79,17 +92,6 @@ public class TaskService {
                 task.setStatus(Status.STARTED);
             }
         }
-    }
-
-    public List<Task> findAllNotCompletedTasks() {
-        return taskRepository.findAllByStatusIsNotOrderByDeadLine(Status.COMPLETED);
-    }
-
-    public List<TaskDto> getUserNotCompletedTasksDto(User user) {
-        return user.getTaskList().stream()
-                .filter(task -> task.getStatus() != Status.COMPLETED)
-                .map(this::taskToDto)
-                .collect(Collectors.toList());
     }
 
     void deleteById(Long id) {
