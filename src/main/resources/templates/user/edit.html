@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Nowe zadanie</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/style/main.css}">
+
+</head>
+<body>
+<section layout:fragment="content" class="addEdit">
+    <h3>Edytuj użytkownika</h3>
+    <form th:action="@{/user/edit}" method="POST" th:object="${user}">
+        <div class="mb-3">
+<!--            <label for="id" class="form-label">Id</label>-->
+            <input type="hidden" id="id" class="form-control" th:field="*{id}"/>
+            <span th:text="|ID: *{id}|"></span>
+        </div>
+        <div class="mb-3">
+            <span th:text="|Adres email: *{email}|"></span>
+        </div>
+        <div class="mb-3">
+            <label for="userFirstName" class="form-label" >Imię</label>
+            <input type="text" id="userFirstName" class="form-control" th:field="*{firstName}" required/>
+        </div>
+        <div class="mb-3">
+            <label for="userLastName" class="form-label">Nazwisko</label>
+            <input type="text" id="userLastName" class="form-control" th:field="*{lastName}" required/>
+        </div>
+        <div class="mb-3">
+            <label for="userRole" class="form-label">Uprawnienia</label>
+            <select id="userRole" class="form-select" multiple="multiple" th:field="*{roleList}">
+                <option th:each="role: ${T(pl.osowicz.task_manager.user.Role).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Zapisz</button>
+    </form>
+</section>
+</body>
+</html>

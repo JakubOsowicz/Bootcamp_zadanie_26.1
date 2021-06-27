@@ -1,6 +1,7 @@
-package pl.osowicz.task_manager;
+package pl.osowicz.task_manager.task;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import pl.osowicz.task_manager.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.Objects;
 @Entity
 public class Task {
 
+    @Transient
     private final String datePattern = "yyyy-MM-dd'T'HH:mm";
 
     @Id
