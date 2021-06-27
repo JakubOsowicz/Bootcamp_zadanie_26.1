@@ -76,7 +76,7 @@ public class UserService {
     }
 
     private void setDefaultRole(User user) {
-        List<UserRole> roleList = Collections.singletonList(new UserRole(user, Role.ROLE_GUEST));
+        List<UserRole> roleList = Collections.singletonList(new UserRole(user, Role.ROLE_UNCONFIRMED));
         user.setRole(new HashSet<>(roleList));
     }
 

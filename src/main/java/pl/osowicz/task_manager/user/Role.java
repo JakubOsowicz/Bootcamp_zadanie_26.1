@@ -3,7 +3,8 @@ package pl.osowicz.task_manager.user;
 public enum Role {
     ROLE_ADMIN("Administrator"),
     ROLE_USER("Użytkownik"),
-    ROLE_GUEST("Gość");
+    ROLE_UNCONFIRMED("Niepotwierdzony"),
+    ROLE_SUPPORT("Wsparcie");
 
     private final String plName;
 

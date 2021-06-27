@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout.html}" xmlns="http://www.w3.org/1999/html">
+      layout:decorate="~{/layout.html}" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>Nowe zadanie</title>
@@ -22,20 +23,33 @@
             <textarea id="taskDescription" class="form-control" th:field="*{description}" maxlength="250"
                       required></textarea>
         </div>
-        <div class="mb-3">
-            <label for="assignedUser" class="form-label">Przypisz użytkownika</label>
-            <select id="assignedUser" class="form-select" th:field="*{user}">
-            <option value="" th:hidden="true">Wybierz użytkownika</option>
-            <option th:each="user: ${users}" th:text="|${user.firstName} ${user.lastName}|" th:value="${user.id}"></option>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="mb-3">
+                <label for="assignedUser" class="form-label">Przypisz użytkownika</label>
+                <select id="assignedUser" class="form-select" th:field="*{user}">
+                    <option value="" th:hidden="true">Wybierz użytkownika</option>
+                    <option th:each="user: ${users}" th:text="|${user.firstName} ${user.lastName}|"
+                            th:value="${user.id}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Rozpoczęcie zadania</label>
+                <input type="datetime-local" id="startDate" class="form-control" th:field="*{startDate}">
+            </div>
+            <div class="mb-3">
+                <label for="deadLine" class="form-label">DeadLine</label>
+                <input type="datetime-local" id="deadLine" class="form-control" th:field="*{deadLine}" required>
+            </div>
+        </div>
+        <div class="mb-3" sec:authorize="!hasRole('ROLE_ADMIN')">
+            <label for="generalDeadLine">Priorytet</label>
+            <select id="generalDeadLine" class="form-select" th:field="*{deadLine}">
+                <option value="" th:hidden="true">Wybierz</option>
+                <option th:text="Niski" th:value="${#temporals.format((#temporals.createNow().plus(14L, T(java.time.temporal.ChronoUnit).DAYS)), 'yyyy-MM-dd''T''HH:mm')}"></option>
+                <option th:text="Normalny" th:value="${#temporals.format((#temporals.createNow().plus(7L, T(java.time.temporal.ChronoUnit).DAYS)), 'yyyy-MM-dd''T''HH:mm')}"></option>
+                <option th:text="Wysoki" th:value="${#temporals.format((#temporals.createNow().plus(3L, T(java.time.temporal.ChronoUnit).DAYS)), 'yyyy-MM-dd''T''HH:mm')}"></option>
+                <option th:text="Awaria" th:value="${#temporals.format((#temporals.createNow().plus(1L, T(java.time.temporal.ChronoUnit).DAYS)), 'yyyy-MM-dd''T''HH:mm')}"></option>
             </select>
-        </div>
-        <div class="mb-3">
-            <label for="startDate" class="form-label">Rozpoczęcie zadania</label>
-            <input type="datetime-local" id="startDate" class="form-control" th:field="*{startDate}">
-        </div>
-        <div class="mb-3">
-            <label for="deadLine" class="form-label">DeadLine</label>
-            <input type="datetime-local" id="deadLine" class="form-control" th:field="*{deadLine}" required>
         </div>
         <button type="submit" class="btn btn-primary">Dodaj</button>
     </form>

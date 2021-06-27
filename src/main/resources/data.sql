@@ -2,13 +2,15 @@ INSERT INTO user(email, password, first_Name, last_Name, deleted)
 VALUES ('Grandpa@Rick.com', '{noop}qwe', 'Rick', 'Sanchez', 'false'),
        ('Tak@Cov.har', '{noop}qwe', 'Takeshi', 'Kovacs', 'false'),
        ('office@outlook.com', '{noop}qwe', 'Spinacz', 'z Worda', 'false'),
+       ('user@user.com', '{noop}qwe', 'User', 'userowy', 'false'),
        ('bua@bua.pl', '{noop}qwe', 'Ja', 'Osobiście', 'false');
 
 INSERT INTO user_role(user_id, role)
-VALUES (1, 'ROLE_USER'),
-       (2, 'ROLE_USER'),
-       (3, 'ROLE_GUEST'),
-       (4, 'ROLE_ADMIN');
+VALUES (1, 'ROLE_SUPPORT'),
+       (2, 'ROLE_SUPPORT'),
+       (3, 'ROLE_SUPPORT'),
+       (4, 'ROLE_USER'),
+       (5, 'ROLE_ADMIN');
 
 INSERT INTO task(name, description, status, dead_line)
 VALUES ('Zrobić portal-Gun', 'Wytentegować ten dynks z tamtym wihajstrem i spadać', 'NOT_ASSIGNED', '2021-05-10 10:00'),
