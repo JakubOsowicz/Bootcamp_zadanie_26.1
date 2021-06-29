@@ -23,7 +23,46 @@ body {
 }
 
 .navbar {
+    width: 100%;
+}
 
+.navbarLeft {
+    text-align: left;
+    width: 33%;
+}
+
+.navbarCenter {
+    text-align: center;
+    width: 33%;
+}
+
+.navbarRight {
+    text-align: right;
+    width: 33%;
+}
+
+.indexSection {
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+.indexLeft {
+    display: inline-block;
+    text-align: right;
+    width: 33%;
+}
+
+.indexCenter {
+    display: inline-block;
+    text-align: center;
+}
+
+.indexRight {
+    display: inline-block;
+    text-align: left;
+    width: 33%;
 }
 
 #btn_check,
