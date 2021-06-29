@@ -12,17 +12,17 @@
 <body>
 
 <div th:fragment="navbar" class="navbar">
-    <div class="navbar">
+    <div class="column-verticallineMiddle form-inline navbarLeft">
         <form th:action="@{/}" method="get"><button class="btn btn-light">Powrót do strony głównej</button></form>
     </div>
-    <div class="navbar" sec:authorize="isAnonymous()">
-        <form th:action="@{/register}" method="get"><button class="btn btn-light mx-2">Rejestracja</button></form>
-        <form th:action="@{/login}" method="post"><button class="btn btn-light ml-2">Zaloguj</button></form>
+    <div class="column-verticallineMiddle form-inline navbarRight" sec:authorize="isAnonymous()">
+        <form th:action="@{/register}" method="get" style="display: inline-block"><button class="btn btn-light mx-2">Rejestracja</button></form>
+        <form th:action="@{/login}" method="post" style="display: inline-block"><button class="btn btn-light ml-2">Zaloguj</button></form>
     </div>
-    <div class="navbar" sec:authorize="hasAnyRole('ROLE_SUPPORT', 'ROLE_ADMIN')">
+    <div class="column-verticallineMiddle form-inline navbarCenter" sec:authorize="hasAnyRole('ROLE_SUPPORT', 'ROLE_ADMIN')">
         <form th:action="@{/task/myTasks}" method="post"><button class="btn btn-light">Moje bieżące zadania</button></form>
     </div>
-    <div class="navbar" sec:authorize="isAuthenticated()">
+    <div class="column-verticallineMiddle form-inline navbarRight" sec:authorize="isAuthenticated()">
         <form th:action="@{/logout}" method="post"><button class="btn btn-light">Wyloguj</button></form>
     </div>
 </div>
