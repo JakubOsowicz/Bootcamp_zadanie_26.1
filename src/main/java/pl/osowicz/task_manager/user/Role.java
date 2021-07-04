@@ -1,10 +1,10 @@
 package pl.osowicz.task_manager.user;
 
 public enum Role {
-    ROLE_ADMIN("Administrator"),
-    ROLE_USER("Użytkownik"),
     ROLE_UNCONFIRMED("Niepotwierdzony"),
-    ROLE_SUPPORT("Wsparcie");
+    ROLE_USER("Użytkownik"),
+    ROLE_SUPPORT("Wsparcie"),
+    ROLE_ADMIN("Administrator");
 
     private final String plName;
 

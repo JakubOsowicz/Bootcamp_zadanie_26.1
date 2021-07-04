@@ -2,10 +2,12 @@ package pl.osowicz.task_manager.user;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.osowicz.task_manager.mail.MailSenderService;
 import pl.osowicz.task_manager.task.Task;
 import pl.osowicz.task_manager.user.dtos.UserDto;
 import pl.osowicz.task_manager.user.dtos.UserFrontDto;
 
+import javax.mail.MessagingException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -14,10 +16,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailSenderService mailSenderService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, MailSenderService mailSenderService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mailSenderService = mailSenderService;
     }
 
     public User findByEmail(String email) {
@@ -129,4 +133,33 @@ public class UserService {
         boolean deleted = user.isDeleted();
         return new UserDto(id, email, firstName, lastName, roles, taskList, deleted);
     }
+
+    public void sendPasswordResetLink(String email) {
+        userRepository.findAllByEmail(email).ifPresent(user -> {
+            String key = UUID.randomUUID().toString();
+            user.setPasswordResetKey(key);
+            try {
+                mailSenderService.resetPasswordMail(email, key);
+            } catch (MessagingException e) {
+
+            }
+            userRepository.save(user);
+        });
+    }
+
+    public void updateUserPassword(String key, String newPassword) {
+        userRepository.findByPasswordResetKey(key).ifPresent(user -> {
+            user.setPassword(encodePassword(newPassword));
+            user.setPasswordResetKey(null);
+            userRepository.save(user);
+        });
+    }
+
+//    public void changePassword(String principalEmail, String currentPassword, String newPassword) {
+//        if (passwordEncoder.matches(currentPassword, findByEmail(principalEmail).getPassword())) {
+//            User user = userRepository.findAllByEmail(principalEmail).get();
+//            user.setPassword(encodePassword(newPassword));
+//            userRepository.save(user);
+//        }
+//    }
 }

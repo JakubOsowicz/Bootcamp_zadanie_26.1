@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByDeleted(boolean deleted);
 
     Optional<User> findAllByEmail(String email);
+
+    Optional<User> findByPasswordResetKey(String key);
 }
