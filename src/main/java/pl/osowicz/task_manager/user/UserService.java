@@ -155,11 +155,14 @@ public class UserService {
         });
     }
 
-//    public void changePassword(String principalEmail, String currentPassword, String newPassword) {
-//        if (passwordEncoder.matches(currentPassword, findByEmail(principalEmail).getPassword())) {
-//            User user = userRepository.findAllByEmail(principalEmail).get();
-//            user.setPassword(encodePassword(newPassword));
-//            userRepository.save(user);
-//        }
-//    }
+    public void changePassword(long id, String currentPassword, String newPassword) {
+        userRepository.findById(id).ifPresent(user -> {
+            if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+                user.setPassword(encodePassword(newPassword));
+                userRepository.save(user);
+            } else {
+                throw new IllegalArgumentException();
+            }
+        });
+    }
 }

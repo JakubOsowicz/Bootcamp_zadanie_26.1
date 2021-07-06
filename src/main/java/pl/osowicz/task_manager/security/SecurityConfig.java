@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -21,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/scripts/**").permitAll()
                     .antMatchers("/error/**").permitAll()
                     .antMatchers("/forgotPassword").permitAll()
-                    .antMatchers("/mailSendSuccess").permitAll()
+                    .antMatchers("/success/**").permitAll()
                     .antMatchers("/resetPassword").permitAll()
                     .antMatchers("/task/add").hasAnyRole("ADMIN", "SUPPORT", "USER")
                     .antMatchers("/task/**").hasAnyRole("ADMIN", "SUPPORT")
@@ -34,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .loginPage("/login").permitAll()
                 .and()
                     .logout()
-                        .logoutUrl("/logout")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/")
                         .permitAll();
     }
