@@ -29,18 +29,20 @@ public class User {
     @Column()
     private boolean deleted = false;
 
+    private String passwordResetKey;
+
     public User() {
     }
 
     public User(String email, String password, String firstName, String lastName) {
-        this(null, email, password, firstName, lastName, null, null, false);
+        this(null, email, password, firstName, lastName, null, null, false, null);
     }
 
     public User(String email, String firstName, String lastName) {
         this(email, null, firstName, lastName);
     }
 
-    public User(Long id, String email, String password, String firstName, String lastName, Set<UserRole> roles, List<Task> taskList, boolean deleted) {
+    public User(Long id, String email, String password, String firstName, String lastName, Set<UserRole> roles, List<Task> taskList, boolean deleted, String passwordResetKey) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -49,6 +51,7 @@ public class User {
         this.roles = roles;
         this.taskList = taskList;
         this.deleted = deleted;
+        this.passwordResetKey = passwordResetKey;
     }
 
     public Long getId() {
@@ -115,16 +118,28 @@ public class User {
         this.deleted = active;
     }
 
+    public String getPasswordResetKey() {
+        return passwordResetKey;
+    }
+
+    public void setPasswordResetKey(String passwordResetKey) {
+        this.passwordResetKey = passwordResetKey;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         User user = (User) o;
-        return deleted == user.deleted && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(roles, user.roles) && Objects.equals(taskList, user.taskList);
+        return deleted == user.deleted && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(roles, user.roles) && Objects.equals(taskList, user.taskList) && Objects.equals(passwordResetKey, user.passwordResetKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, firstName, lastName, roles, taskList, deleted);
+        return Objects.hash(id, email, password, firstName, lastName, roles, taskList, deleted, passwordResetKey);
     }
 }

@@ -7,30 +7,35 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/style/**").permitAll()
-                .antMatchers("/scripts/**").permitAll()
-                .antMatchers("/error/**").permitAll()
-                .antMatchers("/task/add").hasAnyRole("ADMIN", "SUPPORT", "USER")
-                .antMatchers("/task/**").hasAnyRole("ADMIN", "SUPPORT")
-                .antMatchers("/user/**").hasRole("ADMIN")
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
+        http
+                .authorizeRequests()
+                    .antMatchers("/").permitAll()
+                    .antMatchers("/register").permitAll()
+                    .antMatchers("/style/**").permitAll()
+                    .antMatchers("/scripts/**").permitAll()
+                    .antMatchers("/error/**").permitAll()
+                    .antMatchers("/forgotPassword").permitAll()
+                    .antMatchers("/success/**").permitAll()
+                    .antMatchers("/resetPassword").permitAll()
+                    .antMatchers("/task/add").hasAnyRole("ADMIN", "SUPPORT", "USER")
+                    .antMatchers("/task/**").hasAnyRole("ADMIN", "SUPPORT")
+                    .antMatchers("/user/**").hasRole("ADMIN")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .usernameParameter("email")
-                    .loginPage("/login").permitAll()
+                        .usernameParameter("email")
+                        .loginPage("/login").permitAll()
                 .and()
                     .logout()
-                        .logoutUrl("/logout")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/")
                         .permitAll();
     }

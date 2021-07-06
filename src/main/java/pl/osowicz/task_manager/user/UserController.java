@@ -39,6 +39,7 @@ public class UserController {
     public String addUserToDatabase(UserFrontDto userFrontDto) {
         User user = userService.addFrontDtoToUser(userFrontDto);
         userService.save(user);
+        userService.sendPasswordResetLink(user.getEmail());
         return "redirect:/";
     }
 
