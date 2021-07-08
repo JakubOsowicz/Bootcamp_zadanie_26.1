@@ -103,3 +103,20 @@ body {
 .btn_form {
     display: inline;
 }
+
+#dropdownAccountMenuContent {
+    width: 33%;
+    right: 0;
+    left: auto;
+    text-align: right;
+}
+
+.short-input {
+    min-width: 10vw;
+    max-width: 25vw;
+}
+
+.center-input {
+    margin: auto;
+    text-align: center;
+}
