@@ -33,7 +33,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        return user.orElse(null);
+        return user.orElseThrow(() -> new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     public List<UserDto> getActiveUsersFullDto() {

@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpServerErrorException;
 import pl.osowicz.task_manager.task.TaskDto;
 import pl.osowicz.task_manager.task.TaskService;
 import pl.osowicz.task_manager.user.User;
@@ -39,10 +40,10 @@ public class AdminController {
     @PostMapping("/assignTask")
     public String assingTaskToUser(@RequestParam(name = "userId") Long userId,
                                    @RequestParam(name = "taskId") Long taskId) {
-        User user = userService.findById(userId);
         try {
+            User user = userService.findById(userId);
             taskService.assignTaskToUser(user, taskId);
-        } catch (NullPointerException e) {
+        } catch (HttpServerErrorException e) {
             return "error/400";
         }
         return "redirect:assignTask";

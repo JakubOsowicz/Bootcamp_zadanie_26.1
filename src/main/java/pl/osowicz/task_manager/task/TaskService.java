@@ -1,8 +1,10 @@
 package pl.osowicz.task_manager.task;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.osowicz.task_manager.testClasses.DateTimeProvider;
+import org.springframework.web.client.HttpServerErrorException;
+import pl.osowicz.task_manager.providers.DateTimeProvider;
 import pl.osowicz.task_manager.user.User;
 
 import java.time.LocalDateTime;
@@ -27,7 +29,7 @@ public class TaskService {
 
     Task findById(Long id) {
         Optional<Task> task = taskRepository.findById(id);
-        return task.orElse(null);
+        return task.orElseThrow(() -> new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     public List<Task> findAllByStatus(Status status) {
@@ -113,7 +115,7 @@ public class TaskService {
 
     public void assignTaskToUser(User currentUser, Long id) {
         if (id == null) {
-            throw new NullPointerException();
+            throw new HttpServerErrorException(HttpStatus.BAD_REQUEST);
         }
         Task task = findById(id);
         task.setUser(currentUser);

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import pl.osowicz.task_manager.testClasses.DateTimeProvider;
+import pl.osowicz.task_manager.providers.DateTimeProvider;
 import pl.osowicz.task_manager.user.User;
 
 import java.time.LocalDateTime;
@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 
 class TaskServiceTest {
@@ -76,18 +77,26 @@ class TaskServiceTest {
     }
 
     @Test
-    void shouldReturnNullForNotExistingId() {
+    void shouldThrowError500ForNotExistingId_FindByIdMethod() {
         //given
         long id = 999L;
         List<Task> taskList = getTaskList().stream().filter(x -> x.getId() == id).collect(Collectors.toList());
         Mockito.when(taskRepository.findById(id)).thenReturn(taskList.stream().findAny());
 
         //when
-        Task task = taskService.findById(id);
 
         //then
-        assertThat(task).isEqualTo(null);
+        assertThatThrownBy(() -> taskService.findById(id));
     }
+
+    @Test
+    void shouldThrowError500ForNull_FindByIdMethod() {
+        //given
+        //when
+        //then
+        assertThatThrownBy(() -> taskService.findById(null));
+    }
+
 
     @Test
     void shouldReturnTasksWithSpecifiedStatusForEveryStatusCode() {
@@ -368,26 +377,52 @@ class TaskServiceTest {
     }
 
     @Test
-    void shouldAssignTaskToUserIfNoTask() {
+    void shouldThrowError500ForNulTask_AssignTaskToUserMethod() {
         //given
-//        Long id = 1L;
-//        Task task = getTaskList().get(2);
         User user = new User("test@test.test", "testName", "testLastname");
-//        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
-
         //when
-        taskService.assignTaskToUser(user, null);
 
         //then
-//        assertThat(task.getUser()).isEqualTo(user);
-//        assertThat(task.getStatus()).isEqualTo(Status.NOT_ASSIGNED);
+        assertThatThrownBy(() -> taskService.assignTaskToUser(user, null));
     }
 
     @Test
-    void taskToDto() {
+    void shouldConvertTaskToTaskDto() {
+        //given
+        Task task = getTaskList().get(0);
+
+        //when
+        TaskDto taskDto = taskService.taskToDto(task);
+
+        //then
+        assertThat(taskDto.getClass()).isEqualTo(TaskDto.class);
+        assertThat(task.getId()).isEqualTo(taskDto.getId());
+        assertThat(task.getName()).isEqualTo(taskDto.getName());
+        assertThat(task.getDescription()).isEqualTo(taskDto.getDescription());
+        assertThat(task.getStartDate()).isEqualTo(taskDto.getStartDate());
+        assertThat(task.getEndDate()).isEqualTo(taskDto.getEndDate());
+        assertThat(task.getDeadLine()).isEqualTo(taskDto.getDeadLine());
+        assertThat(task.getUser()).isEqualTo(taskDto.getUser());
+        assertThat(task.getStatus()).isEqualTo(taskDto.getStatus());
     }
 
     @Test
     void dtoToTask() {
+        //given
+        TaskDto taskDto = new TaskDto(1L, "zadanie " + 1L, "z_opisem", null, Status.STARTED, null, null, null);
+
+        //when
+        Task task = taskService.dtoToTask(taskDto);
+
+        //then
+        assertThat(task.getClass()).isEqualTo(Task.class);
+        assertThat(task.getId()).isEqualTo(taskDto.getId());
+        assertThat(task.getName()).isEqualTo(taskDto.getName());
+        assertThat(task.getDescription()).isEqualTo(taskDto.getDescription());
+        assertThat(task.getStartDate()).isEqualTo(taskDto.getStartDate());
+        assertThat(task.getEndDate()).isEqualTo(taskDto.getEndDate());
+        assertThat(task.getDeadLine()).isEqualTo(taskDto.getDeadLine());
+        assertThat(task.getUser()).isEqualTo(taskDto.getUser());
+        assertThat(task.getStatus()).isEqualTo(taskDto.getStatus());
     }
 }

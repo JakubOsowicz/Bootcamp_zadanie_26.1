@@ -14,7 +14,7 @@
     <name>task_manager</name>
     <description>Bootcamp_25.1-taskManager</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>15</java.version>
     </properties>
     <dependencies>
         <dependency>

@@ -1,4 +1,4 @@
-package pl.osowicz.task_manager.testClasses;
+package pl.osowicz.task_manager.providers;
 
 import org.springframework.stereotype.Service;
 
