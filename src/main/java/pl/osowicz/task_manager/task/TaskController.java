@@ -95,7 +95,11 @@ public class TaskController {
     public String takeTask(Principal principal, @RequestParam(name = "id") Long id,
                            @RequestParam(name = "status", required = false) Status listStatus) {
         User currentUser = userService.findByEmail(principal.getName());
-        taskService.assignTaskToUser(currentUser, id);
+        try {
+            taskService.assignTaskToUser(currentUser, id);
+        } catch (NullPointerException e) {
+            return "error/400";
+        }
         return taskService.redirectToPreviousTaskList(listStatus, "");
     }
 

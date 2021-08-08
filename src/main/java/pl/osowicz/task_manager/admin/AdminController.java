@@ -40,7 +40,11 @@ public class AdminController {
     public String assingTaskToUser(@RequestParam(name = "userId") Long userId,
                                    @RequestParam(name = "taskId") Long taskId) {
         User user = userService.findById(userId);
-        taskService.assignTaskToUser(user, taskId);
+        try {
+            taskService.assignTaskToUser(user, taskId);
+        } catch (NullPointerException e) {
+            return "error/400";
+        }
         return "redirect:assignTask";
     }
 }

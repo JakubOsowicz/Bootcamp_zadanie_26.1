@@ -17,7 +17,7 @@
             <label class="form-label" for="specifiedUser">Użytownik</label>
             <select class="form-select short-input center-input" id="specifiedUser" name="userId">
                 <option th:each="user: ${users}" th:value="${user.id}"
-                        th:text="|${user.firstName}, ${user.lastName}|"></option>
+                        th:text="|${user.firstName} ${user.lastName}|"></option>
             </select>
         </div>
         <form>

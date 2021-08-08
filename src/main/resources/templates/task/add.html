@@ -43,7 +43,7 @@
         </div>
         <div class="mb-3" sec:authorize="!hasRole('ROLE_ADMIN')">
             <label for="generalDeadLine">Priorytet</label>
-            <select id="generalDeadLine" class="form-select" th:field="*{deadLine}">
+            <select id="generalDeadLine" class="form-select" th:field="*{deadLine}" required>
                 <option value="" th:hidden="true">Wybierz</option>
                 <option th:text="Niski" th:value="${#temporals.format((#temporals.createNow().plus(14L, T(java.time.temporal.ChronoUnit).DAYS)), 'yyyy-MM-dd''T''HH:mm')}"></option>
                 <option th:text="Normalny" th:value="${#temporals.format((#temporals.createNow().plus(7L, T(java.time.temporal.ChronoUnit).DAYS)), 'yyyy-MM-dd''T''HH:mm')}"></option>

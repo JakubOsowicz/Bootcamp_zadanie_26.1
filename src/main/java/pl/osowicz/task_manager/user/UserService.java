@@ -1,7 +1,9 @@
 package pl.osowicz.task_manager.user;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import pl.osowicz.task_manager.mail.MailSenderService;
 import pl.osowicz.task_manager.task.Task;
 import pl.osowicz.task_manager.user.dtos.UserDto;
@@ -26,7 +28,7 @@ public class UserService {
 
     public User findByEmail(String email) {
         Optional<User> user = userRepository.findAllByEmail(email);
-        return user.orElseThrow();
+        return user.orElseThrow(() -> new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     public User findById(Long id) {
@@ -65,23 +67,34 @@ public class UserService {
         }
     }
 
-    public User registerDtoToUser(UserFrontDto userFrontDto) {
-        String email = userFrontDto.getEmail();
-        String password = encodePassword(userFrontDto.getPassword());
-        String firstName = userFrontDto.getFirstName();
-        String lastName = userFrontDto.getLastName();
-        User user = new User(email, password, firstName, lastName);
-        setDefaultRole(user);
-        return user;
+    public void registerNewUser(UserDto userDto) {
+        User user = dtoToUser(userDto);
+        user.setPassword(encodePassword(user.getPassword()));
+        user.setRole(createDefaultRoleSet(user));
+        save(user);
+    }
+
+    public User dtoToUser(UserDto userDto) {
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
+        String firstName = userDto.getFirstName();
+        String lastName = userDto.getLastName();
+        return new User(email, password, firstName, lastName);
     }
 
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
 
-    private void setDefaultRole(User user) {
-        List<UserRole> roleList = Collections.singletonList(new UserRole(user, Role.ROLE_UNCONFIRMED));
-        user.setRole(new HashSet<>(roleList));
+    private Set<UserRole> createDefaultRoleSet(User user) {
+        Set<UserRole> roleSet;
+        if (user.getRoles() == null) {
+            roleSet = new HashSet<>();
+        } else {
+            roleSet = user.getRoles();
+        }
+        roleSet.add(new UserRole(user, Role.ROLE_UNCONFIRMED));
+        return roleSet;
     }
 
     public User addFrontDtoToUser(UserFrontDto userFrontDto) {
@@ -89,12 +102,20 @@ public class UserService {
         String firstName = userFrontDto.getFirstName();
         String lastName = userFrontDto.getLastName();
         User user = new User(email, firstName, lastName);
+        Set<UserRole> roleSet = userRoleListToSet(userFrontDto, user);
+        user.setRole(roleSet);
+        return user;
+    }
+
+    private Set<UserRole> userRoleListToSet(UserFrontDto userFrontDto, User user) {
         Set<UserRole> roleSet = userFrontDto.getRoleList()
                 .stream()
                 .map(role -> new UserRole(user, role))
                 .collect(Collectors.toSet());
-        user.setRole(roleSet);
-        return user;
+        if (roleSet.isEmpty()) {
+            roleSet = createDefaultRoleSet(user);
+        }
+        return roleSet;
     }
 
     public UserFrontDto userToFrontDto(User user) {
@@ -115,10 +136,7 @@ public class UserService {
         user.setFirstName(userFrontDto.getFirstName());
         user.setLastName(userFrontDto.getLastName());
         user.getRoles().clear();
-        Set<UserRole> roleSet = userFrontDto.getRoleList()
-                .stream()
-                .map(role -> new UserRole(user, role))
-                .collect(Collectors.toSet());
+        Set<UserRole> roleSet = userRoleListToSet(userFrontDto, user);
         user.getRoles().addAll(roleSet);
         return user;
     }
@@ -128,10 +146,10 @@ public class UserService {
         String email = user.getEmail();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
-        Set<UserRole> roles = user.getRoles();
+        Set<UserRole> roleSet = user.getRoles();
         List<Task> taskList = user.getTaskList();
         boolean deleted = user.isDeleted();
-        return new UserDto(id, email, firstName, lastName, roles, taskList, deleted);
+        return new UserDto(id, email, firstName, lastName, roleSet, taskList, deleted);
     }
 
     public void sendPasswordResetLink(String email) {
