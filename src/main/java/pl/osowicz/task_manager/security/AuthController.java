@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.osowicz.task_manager.user.User;
 import pl.osowicz.task_manager.user.UserService;
 import pl.osowicz.task_manager.user.dtos.UserDto;
-import pl.osowicz.task_manager.user.dtos.UserFrontDto;
 
 import java.security.Principal;
 
@@ -34,14 +33,13 @@ public class AuthController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("user", new UserFrontDto());
+        model.addAttribute("user", new UserDto());
         return "security/register";
     }
 
     @PostMapping("/register")
-    public String processRegister(UserFrontDto userFrontDto) {
-        User user = userService.registerDtoToUser(userFrontDto);
-        userService.save(user);
+    public String processRegister(UserDto userDto) {
+        userService.registerNewUser(userDto);
         return "redirect:login";
     }
 

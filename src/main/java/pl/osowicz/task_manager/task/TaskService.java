@@ -1,11 +1,13 @@
 package pl.osowicz.task_manager.task;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpServerErrorException;
+import pl.osowicz.task_manager.providers.DateTimeProvider;
 import pl.osowicz.task_manager.user.User;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,18 +16,20 @@ import java.util.stream.Collectors;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final DateTimeProvider dateTimeProvider;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, DateTimeProvider dateTimeProvider) {
         this.taskRepository = taskRepository;
+        this.dateTimeProvider = dateTimeProvider;
     }
 
     List<Task> findAll() {
-        return taskRepository.findAll();
+        return taskRepository.findAllTasks();
     }
 
     Task findById(Long id) {
         Optional<Task> task = taskRepository.findById(id);
-        return task.orElse(null);
+        return task.orElseThrow(() -> new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     public List<Task> findAllByStatus(Status status) {
@@ -71,13 +75,13 @@ public class TaskService {
 
     void setTaskStatusCompleted(Task task) {
         task.setStatus(Status.COMPLETED);
-        task.setEndDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        task.setEndDate(dateTimeProvider.getLocalDateTimeNowTruncatedToSeconds());
         saveTask(task);
     }
 
     void setTaskStatusStarted(Task task) {
         task.setStatus(Status.STARTED);
-        task.setStartDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        task.setStartDate(dateTimeProvider.getLocalDateTimeNowTruncatedToSeconds());
         saveTask(task);
     }
 
@@ -110,6 +114,9 @@ public class TaskService {
     }
 
     public void assignTaskToUser(User currentUser, Long id) {
+        if (id == null) {
+            throw new HttpServerErrorException(HttpStatus.BAD_REQUEST);
+        }
         Task task = findById(id);
         task.setUser(currentUser);
         setTaskStatus(task);

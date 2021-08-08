@@ -17,7 +17,17 @@ VALUES ('Zrobić portal-Gun', 'Pomajstrować', 'NOT_ASSIGNED', '2021-05-10 10:00
        ('Idź na presłuchanie', 'Kontroluj Konstrukt', 'NOT_ASSIGNED', '2021-05-11 11:11');
 
 INSERT INTO task(name, description, user_id, status, dead_line)
-VALUES ('Podpowiedź', 'Daj oczywistą podpowiedź', 3, 'ASSIGNED', '2021-10-25 15:27');
+VALUES ('Podpowiedź', 'Daj oczywistą podpowiedź', 3, 'ASSIGNED', '2021-10-25 15:27'),
+       ('1', 'aa', 5, 'ASSIGNED', '2021-05-11 11:11'),
+       ('2', 'bb', 5, 'ASSIGNED', '2021-05-11 11:11'),
+       ('3', 'cc', 5, 'ASSIGNED', '2021-05-11 11:11'),
+       ('4', 'dd', 5, 'ASSIGNED', '2021-05-11 11:11'),
+       ('5', 'ee', 5, 'ASSIGNED', '2021-05-11 11:11'),
+       ('6', 'ff', 5, 'ASSIGNED', '2021-05-11 11:11'),
+       ('7', 'gg', 5, 'ASSIGNED', '2021-05-11 11:11'),
+       ('8', 'hh', 5, 'ASSIGNED', '2021-05-11 11:11');
+
 
 INSERT INTO task(name, description, user_id, status, start_Date, end_Date, dead_line)
 VALUES ('Spotkanko', 'Wesoły wieczorek', 4, 'STARTED', '2021-05-02 15:00', '2021-05-03 10:00', '2021-05-03 16:00')
+

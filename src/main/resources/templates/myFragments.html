@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Fragments</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/style/main.css}">
@@ -35,10 +35,10 @@
         </form>
     </div>
     <div class="column-verticallineMiddle form-inline navbarRight dropdown" sec:authorize="isAuthenticated()">
-        <button class="btn btn-light dropdown-toggle" id="dropdownAccountMenuButton" data-bs-toggle="dropdown"
+        <button class="btn btn-light dropdown" id="dropdownAccountMenuButton" data-bs-toggle="dropdown"
                 aria-expanded="false">Moje konto
         </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownAccountMenuButton">
+        <ul id="dropdownAccountMenuContent" class="dropdown-menu" aria-labelledby="dropdownAccountMenuButton">
             <li><a class="dropdown-item" th:href="@{/changePassword}">Zmień hasło</a></li>
             <li><a class="dropdown-item" th:href="@{/logout}">Wyloguj</a></li>
         </ul>
