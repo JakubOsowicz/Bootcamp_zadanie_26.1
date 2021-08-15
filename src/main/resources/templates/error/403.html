@@ -2,14 +2,14 @@
 <html lang="pl" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Ooops!</title>
+    <title th:text="#{error.title}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/style/main.css}">
 </head>
 <body>
-<h2 class="mb-4">Coś poszło nie tak!</h2>
-<p>Nie masz wystarczających uprawnień do przeglądania tej witryny.</p>
-<form th:action="@{/}" method="get"><button class="btn btn-outline-secondary">Powrót do strony głównej</button></form>
+<h2 class="mb-4" th:text="#{error.hello}"></h2>
+<p th:text="#{error.forbidden}"></p>
+<form th:action="@{/}" method="get"><button class="btn btn-outline-secondary" th:text="#{error.back_to_homepage}"></button></form>
 </body>
 </html>

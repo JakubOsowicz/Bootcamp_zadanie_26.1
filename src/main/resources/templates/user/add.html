@@ -4,34 +4,34 @@
       layout:decorate="~{/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Nowe zadanie</title>
+    <title th:text="#{uadd.title}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/style/main.css}">
 </head>
 <body>
 <section layout:fragment="content" class="addEdit">
-    <h3 class="mb-4">Nowy użytkownik</h3>
+    <h3 class="mb-4" th:text="#{uadd.hello}"></h3>
     <form th:action="@{/user/add}" method="POST" th:object="${user}">
         <div class="mb-3">
-            <label for="userEmail" class="form-label">Adres mailowy</label>
+            <label for="userEmail" class="form-label" th:text="#{user.email}"></label>
             <input type="email" id="userEmail" class="form-control" th:field="*{email}" required/>
         </div>
         <div class="mb-3">
-            <label for="userFirstName" class="form-label" >Imię</label>
+            <label for="userFirstName" class="form-label" th:text="#{user.f_name}"></label>
             <input type="text" id="userFirstName" class="form-control" th:field="*{firstName}" required/>
         </div>
         <div class="mb-3">
-            <label for="userLastName" class="form-label">Nazwisko</label>
+            <label for="userLastName" class="form-label" th:text="#{user.l_name}"></label>
             <input type="text" id="userLastName" class="form-control" th:field="*{lastName}" required/>
         </div>
         <div class="mb-3">
-            <label for="userRole" class="form-label">Uprawnienia</label>
+            <label for="userRole" class="form-label" th:text="#{user.permissions}"></label>
             <select id="userRole" class="form-control" multiple="multiple" th:field="*{roleList}">
                 <option th:each="role: ${T(pl.osowicz.task_manager.user.Role).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
             </select>
         </div>
-        <button type="submit" class="btn btn-outline-dark">Dodaj</button>
+        <button type="submit" class="btn btn-outline-dark" th:text="#{uadd.add}"></button>
     </form>
 </section>
 </body>

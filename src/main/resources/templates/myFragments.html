@@ -17,30 +17,30 @@
             crossorigin="anonymous"></script>
     <div class="column-verticallineMiddle form-inline navbarLeft">
         <form th:action="@{/}" method="get">
-            <button class="btn btn-light">Powrót do strony głównej</button>
+            <button class="btn btn-light" th:text="#{fr.homepage}"></button>
         </form>
     </div>
     <div class="column-verticallineMiddle form-inline navbarRight" sec:authorize="isAnonymous()">
         <form th:action="@{/register}" method="get" style="display: inline-block">
-            <button class="btn btn-light mx-2">Rejestracja</button>
+            <button class="btn btn-light mx-2" th:text="#{fr.registration}"></button>
         </form>
         <form th:action="@{/login}" method="post" style="display: inline-block">
-            <button class="btn btn-light ml-2">Zaloguj</button>
+            <button class="btn btn-light ml-2" th:text="#{index.login}"></button>
         </form>
     </div>
     <div class="column-verticallineMiddle form-inline navbarCenter"
          sec:authorize="hasAnyRole('ROLE_SUPPORT', 'ROLE_ADMIN')">
         <form th:action="@{/task/myTasks}" method="post">
-            <button class="btn btn-light">Moje bieżące zadania</button>
+            <button class="btn btn-light" th:text="#{fr.current_tasks}"></button>
         </form>
     </div>
     <div class="column-verticallineMiddle form-inline navbarRight dropdown" sec:authorize="isAuthenticated()">
         <button class="btn btn-light dropdown" id="dropdownAccountMenuButton" data-bs-toggle="dropdown"
-                aria-expanded="false">Moje konto
+                aria-expanded="false" th:text="#{fr.my_account}">
         </button>
         <ul id="dropdownAccountMenuContent" class="dropdown-menu" aria-labelledby="dropdownAccountMenuButton">
-            <li><a class="dropdown-item" th:href="@{/changePassword}">Zmień hasło</a></li>
-            <li><a class="dropdown-item" th:href="@{/logout}">Wyloguj</a></li>
+            <li><a class="dropdown-item" th:href="@{/changePassword}" th:text="#{fr.change_pwd}"></a></li>
+            <li><a class="dropdown-item" th:href="@{/logout}" th:text="#{fr.logout}"></a></li>
         </ul>
     </div>
 </div>
