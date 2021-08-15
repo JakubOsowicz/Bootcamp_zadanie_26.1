@@ -4,7 +4,7 @@
       layout:decorate="~{/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Szczegóły</title>
+    <title th:text="#{udet.title}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/style/main.css}">
@@ -15,33 +15,33 @@
         <h3 th:text="|*{firstName} *{lastName}|"></h3>
         <table class="table table-striped">
             <tr>
-                <th>id</th>
-                <th>e-mail</th>
-                <th>uprawnienia</th>
-                <th>aktywny</th>
+                <th th:text="#{user.id}"></th>
+                <th th:text="#{user.email}"></th>
+                <th th:text="#{user.permissions}"></th>
+                <th th:text="#{user.active}"></th>
             </tr>
             <tr>
                 <td th:text="*{id}"></td>
                 <td th:text="*{email}"></td>
                 <td>
-                    <span th:each="role: ${user.roles}" th:utext="${role.role.getPlName() + '&lt;/br&gt;'}"></span>
+                    <span th:each="role: ${user.roles}" th:utext="#{'role.'+${role.role.name()}} + '&lt;/br&gt;'"></span>
                 </td>
                 <td>
-                    <span th:if="*{!deleted}" th:text="Tak"></span>
-                    <span th:if="*{deleted}" th:text="Nie"></span>
+                    <span th:if="*{!deleted}" th:text="#{text.yes}"></span>
+                    <span th:if="*{deleted}" th:text="#{text.no}"></span>
                 </td>
             </tr>
         </table>
-        <h4>Lista zadań</h4>
+        <h4 th:text="#{tlist.title}"></h4>
         <table class="table table-striped">
             <tr>
-                <th>id</th>
-                <th>Nazwa</th>
-                <th>Opis</th>
-                <th>Czas rozpoczęcia</th>
-                <th>DeadLine</th>
-                <th>Czas zakończenia</th>
-                <th>Status</th>
+                <th th:text="#{tlist.id}">id</th>
+                <th th:text="#{tlist.name}">Nazwa</th>
+                <th th:text="#{tlist.desc}">Opis</th>
+                <th th:text="#{tlist.start}">Czas rozpoczęcia</th>
+                <th th:text="#{tlist.deadline}">DeadLine</th>
+                <th th:text="#{tlist.end}">Czas zakończenia</th>
+                <th th:text="#{tlist.status}">Status</th>
             </tr>
             <tr th:each="task : ${user.getTaskList()}">
                 <td th:text="${task.id}"></td>
@@ -50,7 +50,7 @@
                 <td th:text="${#temporals.format(task.startDate, 'dd.MM.yyyy HH:mm')}"></td>
                 <td th:text="${#temporals.format(task.deadLine, 'dd.MM.yyyy HH:mm')}"></td>
                 <td th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"></td>
-                <td th:text="${task.status.getPlName()}"></td>
+                <td th:text="#{'status.'+${task.status.name()}}"></td>
             </tr>
         </table>
     </div>

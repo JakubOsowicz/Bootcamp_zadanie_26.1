@@ -26,6 +26,10 @@ body {
     width: 100%;
 }
 
+.inline-button {
+    display: inline-block;
+}
+
 .navbarLeft {
     text-align: left;
     width: 33%;
@@ -109,6 +113,13 @@ body {
     right: 0;
     left: auto;
     text-align: right;
+}
+
+#dropdownLangMenuContent {
+    width: 33%;
+    left: 0;
+    right: auto;
+    text-align: left;
 }
 
 .short-input {
