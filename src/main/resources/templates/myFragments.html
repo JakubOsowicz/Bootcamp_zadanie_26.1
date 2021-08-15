@@ -16,9 +16,24 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <div class="column-verticallineMiddle form-inline navbarLeft">
-        <form th:action="@{/}" method="get">
-            <button class="btn btn-light" th:text="#{fr.homepage}"></button>
-        </form>
+        <div class="inline-button dropdown">
+            <button class="btn btn-light dropdown inline" id="dropdownLangMenuButton" data-bs-toggle="dropdown"
+                    aria-expanded="false" th:text="#{fr.language}">
+            </button>
+            <ul id="dropdownLangMenuContent" class="dropdown-menu" aria-labelledby="dropdownLangMenuButton">
+                <li><a class="dropdown-item" th:each="lang: ${T(pl.osowicz.task_manager.Language).values()}"
+                       th:value="${lang}"
+                       th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}"
+                       th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', lang.name()).toUriString()}"
+                       th:text="#{'fr.'+${lang.name()}}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="inline-button">
+            <form th:action="@{/}" method="get">
+                <button class="btn btn-light" th:text="#{fr.homepage}"></button>
+            </form>
+        </div>
     </div>
     <div class="column-verticallineMiddle form-inline navbarRight" sec:authorize="isAnonymous()">
         <form th:action="@{/register}" method="get" style="display: inline-block">

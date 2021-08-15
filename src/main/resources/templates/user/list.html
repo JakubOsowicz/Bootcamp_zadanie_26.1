@@ -27,7 +27,7 @@
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
             <td>
-                <span th:each="role: ${user.roles}" th:utext="${role.role.getPlName() + '&lt;/br&gt;'}"></span>
+                <span th:each="role: ${user.roles}" th:utext="#{'role.'+${role.role.name()}} + '&lt;/br&gt;'"></span>
             </td>
             <td id="last_column_buttons" >
                 <form class="btn_form" th:action="@{/user/details}" th:method="get">

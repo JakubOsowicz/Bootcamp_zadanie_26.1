@@ -57,7 +57,7 @@
                       th:style="${(task.deadLine.isBefore(task.endDate)) ? 'color: rgb(255,78,78)' : 'color: rgb(0,0,0)'}"></span>
                 <span th:unless="${task.endDate != null}"> </span>
             </td>
-            <td th:text="${task.status.getPlName()}"></td>
+            <td th:text="#{'status.'+${task.status.name()}}"></td>
             <td id="last_column_buttons" th:object="${status}"
                 th:if="${status != T(pl.osowicz.task_manager.task.Status).COMPLETED}">
                 <span th:if="${(task.user != null) and (task.startDate != null) and (task.status != T(pl.osowicz.task_manager.task.Status).COMPLETED)}">

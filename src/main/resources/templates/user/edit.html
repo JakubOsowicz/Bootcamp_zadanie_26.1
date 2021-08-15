@@ -31,7 +31,7 @@
         <div class="mb-3">
             <label for="userRole" class="form-label" th:text="#{user.permissions}"></label>
             <select id="userRole" class="form-select" multiple="multiple" th:field="*{roleList}">
-                <option th:each="role: ${T(pl.osowicz.task_manager.user.Role).values()}" th:value="${role}" th:text="${role.getPlName()}"></option>
+                <option th:each="role: ${T(pl.osowicz.task_manager.user.Role).values()}" th:value="${role}" th:text="#{'role.'+${role.name()}}"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-outline-dark" th:text="#{uedit.save}"></button>

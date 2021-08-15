@@ -24,7 +24,7 @@
                 <td th:text="*{id}"></td>
                 <td th:text="*{email}"></td>
                 <td>
-                    <span th:each="role: ${user.roles}" th:utext="${role.role.getPlName() + '&lt;/br&gt;'}"></span>
+                    <span th:each="role: ${user.roles}" th:utext="#{'role.'+${role.role.name()}} + '&lt;/br&gt;'"></span>
                 </td>
                 <td>
                     <span th:if="*{!deleted}" th:text="#{text.yes}"></span>
@@ -50,7 +50,7 @@
                 <td th:text="${#temporals.format(task.startDate, 'dd.MM.yyyy HH:mm')}"></td>
                 <td th:text="${#temporals.format(task.deadLine, 'dd.MM.yyyy HH:mm')}"></td>
                 <td th:text="${#temporals.format(task.endDate, 'dd.MM.yyyy HH:mm')}"></td>
-                <td th:text="${task.status.getPlName()}"></td>
+                <td th:text="#{'status.'+${task.status.name()}}"></td>
             </tr>
         </table>
     </div>
